@@ -1,0 +1,3057 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLP 코칭 핵심 교안</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --ink-mid: #2d3561;
+  --ink-light: #4a5568;
+  --accent: #c8963e;
+  --accent2: #e8b86d;
+  --sky: #4a90d9;
+  --sky-light: #ebf4ff;
+  --green: #2d7a4f;
+  --green-light: #e8f5ee;
+  --red: #c0392b;
+  --red-light: #fdf0ee;
+  --gold: #b8860b;
+  --paper: #fdfaf5;
+  --paper2: #f5f0e8;
+  --line: #e2ddd5;
+  --sidebar-w: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.8;
+  display: flex;
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--ink);
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+  z-index: 100;
+  transition: transform 0.3s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+#sidebar::-webkit-scrollbar { width: 5px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+#sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.35); }
+
+.sidebar-header {
+  padding: 32px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-logo {
+  font-family: 'DM Serif Display', serif;
+  color: var(--accent2);
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.sidebar-title {
+  font-family: 'Noto Serif KR', serif;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.sidebar-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+.nav-section {
+  padding: 16px 0 8px;
+}
+
+.nav-section-label {
+  padding: 0 24px 8px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+}
+
+.nav-item:hover, .nav-item.active {
+  background: rgba(255,255,255,0.07);
+  color: var(--accent2);
+  border-left-color: var(--accent);
+}
+
+.nav-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 11px;
+  color: var(--accent);
+  min-width: 20px;
+}
+
+.sidebar-footer {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ─── MAIN ─── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ─── HERO ─── */
+.hero {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-mid) 60%, #1a3a5c 100%);
+  padding: 80px 60px 70px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(200,150,62,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.hero-eyebrow {
+  font-family: 'DM Serif Display', serif;
+  color: var(--accent);
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: 'Noto Serif KR', serif;
+  color: #fff;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.hero-title span { color: var(--accent2); }
+
+.hero-sub {
+  color: rgba(255,255,255,0.6);
+  font-size: 16px;
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-tag {
+  padding: 5px 14px;
+  border: 1px solid rgba(200,150,62,0.4);
+  color: var(--accent2);
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+/* ─── PROGRESS BAR ─── */
+.progress-bar {
+  height: 3px;
+  background: var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--sky));
+  width: 0%;
+  transition: width 0.1s;
+}
+
+/* ─── CONTENT ─── */
+.content {
+  padding: 0 60px 80px;
+}
+
+/* ─── CHAPTER ─── */
+.chapter {
+  padding-top: 64px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+
+.chapter:last-child { border-bottom: none; }
+
+.chapter-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.chapter-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.chapter-line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.chapter-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.chapter-desc {
+  color: var(--ink-light);
+  font-size: 14px;
+  margin-bottom: 32px;
+  max-width: 700px;
+}
+
+/* ─── SECTION ─── */
+.section {
+  margin-bottom: 36px;
+}
+
+.section-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-mid);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+}
+
+.section-title-full {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-mid);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+}
+
+p {
+  color: var(--ink-light);
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 12px;
+}
+
+/* ─── CARDS ─── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  border-top: 3px solid var(--accent);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.card-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.card-text {
+  font-size: 13px;
+  color: var(--ink-light);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ─── QUOTE BOX ─── */
+.quote-box {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-mid) 100%);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-box::before {
+  content: '"';
+  font-family: 'DM Serif Display', serif;
+  font-size: 120px;
+  color: rgba(200,150,62,0.15);
+  position: absolute;
+  top: -20px; left: 16px;
+  line-height: 1;
+}
+
+.quote-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  color: var(--accent2);
+  font-weight: 600;
+  line-height: 1.6;
+  position: relative;
+  margin: 0;
+}
+
+.quote-sub {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  position: relative;
+  margin-bottom: 0;
+}
+
+/* ─── HIGHLIGHT BOX ─── */
+.highlight {
+  background: var(--sky-light);
+  border-left: 4px solid var(--sky);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.highlight p { color: var(--ink); margin: 0; font-size: 14px; }
+
+.tip-box {
+  background: #fffbeb;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.tip-box p { color: #78540a; margin: 0; font-size: 14px; }
+
+.tip-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.warning-box {
+  background: var(--red-light);
+  border-left: 4px solid var(--red);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.warning-box p { color: #7b1d1d; margin: 0; font-size: 14px; }
+
+.success-box {
+  background: var(--green-light);
+  border-left: 4px solid var(--green);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.success-box p { color: #1a4731; margin: 0; font-size: 14px; }
+
+/* ─── TABLE ─── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  background: var(--ink);
+  color: var(--accent2);
+  font-family: 'Noto Serif KR', serif;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-light);
+  vertical-align: top;
+  line-height: 1.7;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: var(--paper2); }
+
+/* ─── FLOW DIAGRAM ─── */
+.flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--paper2);
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.flow-step {
+  background: var(--ink);
+  color: var(--accent2);
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 18px;
+  padding: 0 8px;
+}
+
+/* ─── DIALOGUE ─── */
+.dialogue {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.dialogue-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.d-line {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+
+.d-role {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  min-width: 52px;
+  text-align: center;
+}
+
+.d-coach { background: var(--sky-light); color: var(--sky); }
+.d-client { background: var(--green-light); color: var(--green); }
+.d-note { background: #f5f0e8; color: #8b6914; font-style: italic; }
+
+.d-text {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+  padding-top: 2px;
+}
+
+/* ─── QUESTION LIST ─── */
+.q-list {
+  list-style: none;
+  margin: 16px 0;
+}
+
+.q-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.q-list li:last-child { border-bottom: none; }
+
+.q-icon {
+  color: var(--accent);
+  font-size: 14px;
+  padding-top: 2px;
+  min-width: 16px;
+}
+
+/* ─── VAKT CARDS ─── */
+.vak-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.vak-card {
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid var(--line);
+}
+
+.vak-v { background: linear-gradient(135deg, #dbeafe, #eff6ff); border-top: 3px solid #3b82f6; }
+.vak-a { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border-top: 3px solid #10b981; }
+.vak-k { background: linear-gradient(135deg, #fed7aa, #fff7ed); border-top: 3px solid #f97316; }
+.vak-d { background: linear-gradient(135deg, #e9d5ff, #faf5ff); border-top: 3px solid #8b5cf6; }
+
+.vak-badge {
+  display: inline-block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.vak-v .vak-badge { color: #1d4ed8; }
+.vak-a .vak-badge { color: #065f46; }
+.vak-k .vak-badge { color: #c2410c; }
+.vak-d .vak-badge { color: #5b21b6; }
+
+.vak-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.vak-desc {
+  font-size: 12px;
+  color: var(--ink-light);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.vak-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.vak-kw {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.7);
+  color: var(--ink-mid);
+}
+
+.vak-q {
+  font-size: 12px;
+  color: var(--ink-mid);
+  font-style: italic;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 6px;
+}
+
+/* ─── QUIZ (설문) ─── */
+.survey-item {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s;
+}
+
+.survey-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+.survey-q {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.survey-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.survey-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.survey-opt:hover { background: var(--paper2); }
+
+.survey-opt input[type="radio"] { display: none; }
+
+.opt-circle {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.survey-opt.selected-v .opt-circle { border-color: #3b82f6; background: #3b82f6; }
+.survey-opt.selected-a .opt-circle { border-color: #10b981; background: #10b981; }
+.survey-opt.selected-k .opt-circle { border-color: #f97316; background: #f97316; }
+.survey-opt.selected-d .opt-circle { border-color: #8b5cf6; background: #8b5cf6; }
+
+.opt-circle::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  display: none;
+}
+
+.survey-opt.selected-v .opt-circle::after,
+.survey-opt.selected-a .opt-circle::after,
+.survey-opt.selected-k .opt-circle::after,
+.survey-opt.selected-d .opt-circle::after { display: block; }
+
+.opt-type {
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  flex-shrink: 0;
+}
+
+.v-type { color: #3b82f6; }
+.a-type { color: #10b981; }
+.k-type { color: #f97316; }
+.d-type { color: #8b5cf6; }
+
+.opt-text { font-size: 13px; color: var(--ink-light); }
+
+/* ─── SCORE RESULT ─── */
+.score-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--ink);
+  color: var(--accent2);
+  font-family: 'Noto Serif KR', serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 20px 0;
+  transition: background 0.2s;
+  letter-spacing: 1px;
+}
+
+.score-btn:hover { background: var(--ink-mid); }
+
+#score-result {
+  display: none;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-mid) 100%);
+  border-radius: 12px;
+  padding: 28px;
+  margin-top: 16px;
+}
+
+.score-bars { display: flex; flex-direction: column; gap: 14px; }
+
+.score-row { display: flex; align-items: center; gap: 12px; }
+
+.score-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.8);
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.score-bar-wrap {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 1s ease;
+  width: 0%;
+}
+
+.bar-v { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.bar-a { background: linear-gradient(90deg, #10b981, #34d399); }
+.bar-k { background: linear-gradient(90deg, #f97316, #fb923c); }
+.bar-d { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+.score-count {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent2);
+  min-width: 36px;
+  text-align: right;
+}
+
+#score-comment {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.8;
+}
+
+/* ─── FOUR QUADRANT ─── */
+.quadrant {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+}
+
+.quad {
+  padding: 20px;
+  background: #fff;
+}
+
+.quad-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.quad-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.quad-q {
+  font-size: 13px;
+  color: var(--sky);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.quad-effect {
+  font-size: 12px;
+  color: var(--ink-light);
+}
+
+.quad:nth-child(1) { background: #fafeff; }
+.quad:nth-child(2) { background: #fff8f8; }
+.quad:nth-child(3) { background: #fffdf5; }
+.quad:nth-child(4) { background: #f8fff9; }
+
+/* ─── CHECKLIST ─── */
+.checklist {
+  list-style: none;
+  margin: 16px 0;
+}
+
+.checklist li {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--ink-light);
+  border-bottom: 1px dashed var(--line);
+  align-items: flex-start;
+}
+
+.checklist li:last-child { border-bottom: none; }
+
+.check-icon { color: var(--accent); font-size: 14px; padding-top: 2px; min-width: 16px; }
+
+/* ───축배다 ─── */
+.chukbae {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.chukbae-card {
+  border-radius: 10px;
+  padding: 24px 20px;
+  text-align: center;
+  border: 1px solid var(--line);
+}
+
+.chukbae-card:nth-child(1) { background: linear-gradient(135deg, #fef3c7, #fffbeb); border-top: 4px solid #f59e0b; }
+.chukbae-card:nth-child(2) { background: linear-gradient(135deg, #dbeafe, #eff6ff); border-top: 4px solid #3b82f6; }
+.chukbae-card:nth-child(3) { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border-top: 4px solid #10b981; }
+
+.chukbae-hanja {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.chukbae-card:nth-child(1) .chukbae-hanja { color: #d97706; }
+.chukbae-card:nth-child(2) .chukbae-hanja { color: #2563eb; }
+.chukbae-card:nth-child(3) .chukbae-hanja { color: #059669; }
+
+.chukbae-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.chukbae-desc {
+  font-size: 12px;
+  color: var(--ink-light);
+  line-height: 1.7;
+}
+
+/* ─── COMING SOON ─── */
+.coming-soon {
+  border: 2px dashed var(--line);
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.cs-icon { font-size: 36px; margin-bottom: 12px; }
+.cs-text { font-family: 'Noto Serif KR', serif; font-size: 16px; color: var(--ink-mid); margin-bottom: 6px; }
+.cs-sub { font-size: 13px; color: var(--ink-light); margin: 0; }
+
+/* ─── BACK TO TOP ─── */
+#back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 90;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ink);
+  color: var(--accent2);
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+#back-to-top.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#back-to-top:hover {
+  background: var(--ink-mid);
+}
+
+/* ─── TOGGLE MOBILE ─── */
+#menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  background: var(--ink);
+  color: var(--accent2);
+  border: none;
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+#menu-toggle.hide-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+#sidebar-overlay.visible { display: block; }
+
+@media (max-width: 768px) {
+  #menu-toggle { display: flex; align-items: center; justify-content: center; }
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  .hero { padding: 60px 24px 50px; }
+  .hero-title { font-size: 32px; }
+  .content { padding: 0 24px 60px; }
+  .vak-grid { grid-template-columns: 1fr; }
+  .chukbae { grid-template-columns: 1fr; }
+  .quadrant { grid-template-columns: 1fr; }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter { animation: fadeUp 0.5s ease both; }
+
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="맨 위로">↑</button>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">NLP Coaching</div>
+    <div class="sidebar-title">슈퍼바이저 코칭<br>핵심 교안</div>
+    <span class="sidebar-badge">알아차림 코칭스쿨</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">기초 이론</div>
+    <a class="nav-item" onclick="goTo('ch1')"><span class="nav-num">01</span> 알아차림과 게슈탈트</a>
+    <a class="nav-item" onclick="goTo('ch2')"><span class="nav-num">02</span> NLP 코칭 핵심 역량</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">핵심 기법</div>
+    <a class="nav-item" onclick="goTo('ch3')"><span class="nav-num">03</span> 페이싱 · 백트래킹</a>
+    <a class="nav-item" onclick="goTo('ch4')"><span class="nav-num">04</span> 목표설정 5가지 원칙</a>
+    <a class="nav-item" onclick="goTo('ch5')"><span class="nav-num">05</span> 아웃컴 프레임</a>
+    <a class="nav-item" onclick="goTo('ch6')"><span class="nav-num">06</span> 데카르트 4분할</a>
+    <a class="nav-item" onclick="goTo('ch7')"><span class="nav-num">07</span> 타임라인 워크</a>
+    <a class="nav-item" onclick="goTo('ch8')"><span class="nav-num">08</span> 생각과 판단의 분리</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">진단</div>
+    <a class="nav-item" onclick="goTo('ch9')"><span class="nav-num">09</span> 선호표상체계 VAKD</a>
+    <a class="nav-item" onclick="goTo('ch10')"><span class="nav-num">10</span> VAK 진단 설문</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">언어 모델</div>
+    <a class="nav-item" onclick="goTo('ch13')"><span class="nav-num">13</span> 메타 모델</a>
+    <a class="nav-item" onclick="goTo('ch14')"><span class="nav-num">14</span> 메타 모델 퀴즈</a>
+    <a class="nav-item" onclick="goTo('ch15')"><span class="nav-num">15</span> 밀턴 모델</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">슈퍼비전 심화</div>
+    <a class="nav-item" onclick="goTo('ch16')"><span class="nav-num">16</span> 세 가지 입장</a>
+    <a class="nav-item" onclick="goTo('ch17')"><span class="nav-num">17</span> 앵커링 심화</a>
+    <a class="nav-item" onclick="goTo('ch18')"><span class="nav-num">18</span> 신경 논리 레벨</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">예정</div>
+    <a class="nav-item" onclick="goTo('ch12')"><span class="nav-num">+</span> 추가 세션 예정</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">부록</div>
+    <a class="nav-item" onclick="goTo('ch11')"><span class="nav-num">부록</span> 축·배·다 마무리</a>
+  </div>
+
+  <div class="sidebar-footer">
+    알아차림 코칭스쿨<br>슈퍼바이저 학습 과정
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Supervisor NLP Coaching</div>
+    <h1 class="hero-title">NLP 코칭<br><span>핵심 교안</span></h1>
+    <p class="hero-sub">슈퍼바이저 학습 과정의 핵심 개념, 기법, 예시 질문을 체계적으로 정리한 복습 교안입니다.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">알아차림 코칭</span>
+      <span class="hero-tag">NLP 기법</span>
+      <span class="hero-tag">목표설정</span>
+      <span class="hero-tag">아웃컴 프레임</span>
+      <span class="hero-tag">VAKD 표상체계</span>
+      <span class="hero-tag">타임라인 워크</span>
+      <span class="hero-tag">세 가지 입장</span>
+      <span class="hero-tag">앵커링</span>
+      <span class="hero-tag">신경 논리 레벨</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ══════════════ CHAPTER 1 ══════════════ -->
+  <div class="chapter" id="ch1">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 01</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">알아차림 코칭과 게슈탈트 심리학</h2>
+    <p class="chapter-desc">코칭의 철학적 뿌리를 이해하고, 알아차림이 왜 변화의 출발점인지 탐색합니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">게슈탈트 심리학의 핵심</div>
+      <div class="quote-box">
+        <p class="quote-text">"전체는 부분의 합보다 크다"</p>
+        <p class="quote-sub">Gestalt = 독일어로 '전체적인 형태, 모양'</p>
+      </div>
+      <p>인간의 뇌는 세상을 조각조각이 아니라 <strong>하나의 의미 있는 전체</strong>로 인식하려는 경향이 있습니다. 음악을 들을 때 개별 음표가 아닌 멜로디 전체로 듣는 것처럼, 우리는 항상 맥락 속에서 의미를 만들어냅니다.</p>
+      <p>코칭·심리치료에서 중요한 개념인 <strong>'미해결 과제(Unfinished Business)'</strong>는 과거에 완전히 마무리되지 않은 감정이나 경험이 현재의 행동과 관계에 계속 영향을 미친다는 것입니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>원리</th><th>설명</th><th>코칭 적용</th></tr>
+          <tr><td><strong>근접성</strong></td><td>가까이 있는 것들을 하나의 그룹으로 인식</td><td>관련된 감정·사건들을 하나의 패턴으로 봄</td></tr>
+          <tr><td><strong>유사성</strong></td><td>비슷한 것들을 같은 무리로 인식</td><td>반복되는 행동 패턴 발견</td></tr>
+          <tr><td><strong>폐쇄성</strong></td><td>불완전한 도형도 완전한 형태로 채워봄</td><td>미해결 감정은 완결을 추구함</td></tr>
+          <tr><td><strong>연속성</strong></td><td>선이나 패턴이 자연스럽게 이어진다고 느낌</td><td>과거-현재-미래를 연속으로 봄</td></tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">⚡ 코칭 적용 포인트</div>
+        <p>게슈탈트는 "맥락이 의미를 만든다"는 관점입니다. 고객의 행동이나 감정을 단편으로 보지 않고, 그 사람의 전체적인 맥락 안에서 이해하려는 태도가 핵심입니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">알아차림 코칭 (Awareness Coaching)</div>
+      <p>클라이언트가 자신의 내면 상태, 패턴, 감정, 생각, 신체 반응 등을 <strong>순간순간 자각(Awareness)하도록 돕는</strong> 코칭 접근법입니다.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">내적 알아차림</div>
+          <p class="card-text">감정, 생각, 믿음, 욕구, 두려움 등을 자각하는 것. 무의식적으로 반복되는 패턴 발견의 시작.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🫁</div>
+          <div class="card-title">신체적 알아차림</div>
+          <p class="card-text">감정이 신체에 어떻게 반응하는지 — 긴장, 호흡, 자세 등을 느끼는 것.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤝</div>
+          <div class="card-title">관계적 알아차림</div>
+          <p class="card-text">타인과의 상호작용에서 나타나는 자신의 패턴을 인식하는 것.</p>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <p><strong>핵심 질문 예시:</strong> "지금 이 순간 몸에서 어떤 느낌이 드나요?" · "그 생각이 떠오를 때 무엇을 알아차리시나요?" · "지금 여기서 무슨 일이 일어나고 있나요?"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 2 ══════════════ -->
+  <div class="chapter" id="ch2">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 02</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">NLP 코칭 핵심 역량</h2>
+    <p class="chapter-desc">신경언어프로그래밍(NLP)의 기본 전제와 코칭에 적용되는 7가지 핵심 역량을 학습합니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">NLP의 핵심 전제</div>
+      <ul class="checklist">
+        <li><span class="check-icon">◆</span><div><strong>지도는 영토가 아니다</strong> — 사람마다 현실을 다르게 인식하며, 클라이언트의 세계관을 존중하는 것이 출발점</div></li>
+        <li><span class="check-icon">◆</span><div><strong>모든 행동에는 긍정적 의도가 있다</strong> — 아무리 부정적으로 보이는 행동도 그 사람 나름의 이유가 있음</div></li>
+        <li><span class="check-icon">◆</span><div><strong>인간은 필요한 모든 자원을 내면에 이미 가지고 있다</strong> — 코치는 자원을 주는 것이 아니라 발견을 돕는 것</div></li>
+        <li><span class="check-icon">◆</span><div><strong>저항은 없고 유연성 부족만 있다</strong> — 고객의 저항은 코치가 방법을 바꾸어야 한다는 신호</div></li>
+      </ul>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">NLP 핵심 역량 7가지</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>역량</th><th>핵심 내용</th><th>실제 적용</th></tr>
+          <tr><td><strong>라포(Rapport) 형성</strong></td><td>언어·자세·호흡·템포를 자연스럽게 매칭하여 신뢰 형성</td><td>고객의 말 속도, 톤을 따라가기</td></tr>
+          <tr><td><strong>감각적 예민성</strong></td><td>표정, 목소리 톤, 자세, 호흡의 미세한 변화 포착</td><td>말 이면의 감정과 상태 읽기</td></tr>
+          <tr><td><strong>언어 패턴 분석 (Meta-Model)</strong></td><td>왜곡·삭제·일반화를 인식하고 정밀 질문으로 명확화</td><td>"항상요? 예외 없이 모든 경우에?"</td></tr>
+          <tr><td><strong>리프레이밍(Reframing)</strong></td><td>상황을 바라보는 틀(Frame)을 바꾸어 새로운 관점 열기</td><td>내용/맥락 리프레이밍</td></tr>
+          <tr><td><strong>앵커링(Anchoring)</strong></td><td>특정 자원 상태를 신체적 자극과 연결</td><td>자신감 상태를 특정 동작과 연결 → 심화: Ch.17</td></tr>
+          <tr><td><strong>타임라인 기법</strong></td><td>과거·현재·미래를 시각화하여 목표를 구체적으로 경험</td><td>공간을 이동하며 미래를 살아봄 → 심화: Ch.07</td></tr>
+          <tr><td><strong>하위 감각양식</strong></td><td>이미지·소리·감각의 세부 특성을 조정하여 감정 변화</td><td>이미지 크기·거리·밝기 조절</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 3 ══════════════ -->
+  <div class="chapter" id="ch3">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 03</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">페이싱과 백트래킹</h2>
+    <p class="chapter-desc">고객의 세계 안으로 들어가는 언어적·비언어적 기술을 학습합니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">페이싱 (Pacing) — 맞추어 가기</div>
+      <div class="quote-box">
+        <p class="quote-text">"지금 이 사람의 세계 안으로 들어가는 것"</p>
+        <p class="quote-sub">고객이 경험하는 현실, 감정, 속도, 리듬을 코치가 함께 느끼고 반영해주는 것</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <div class="card-title">언어적 페이싱</div>
+          <p class="card-text">고객이 쓰는 단어, 표현, 은유를 그대로 사용. "벽에 부딪힌 느낌"을 코치가 "막막하시겠네요"로 바꾸는 순간 연결감이 끊어집니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎵</div>
+          <div class="card-title">비언어적 페이싱</div>
+          <p class="card-text">말의 속도, 목소리 톤, 호흡의 리듬, 자세를 자연스럽게 맞춰감. 고객이 천천히 무겁게 말하는데 코치가 빠르고 경쾌하면 불일치 발생.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">❤️</div>
+          <div class="card-title">감정적 페이싱</div>
+          <p class="card-text">고객의 감정 상태와 경험을 판단 없이 있는 그대로 인정. 타당화(Validation)가 핵심.</p>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="flow-step">페이싱</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">라포 형성</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">리딩 (촉진)</div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">⚡ 핵심 원칙</div>
+        <p>페이싱 없이 리딩부터 하면 고객은 끌려가는 느낌을 받고 저항이 생깁니다. 이게 코칭이 아니라 설득이나 조언이 되어버리는 지점입니다.</p>
+      </div>
+
+      <p><strong>페이싱과 코치의 자기 알아차림:</strong> 페이싱을 잘 하려면 코치 자신이 먼저 고요해야 합니다. 코치가 자기 생각, 다음 질문, 판단으로 머릿속이 바쁘면 고객의 미세한 신호를 놓치게 됩니다.</p>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">백트래킹 (Backtracking)</div>
+      <div class="quote-box">
+        <p class="quote-text">"고객이 한 말을 그대로 거울처럼 돌려주는 것"</p>
+        <p class="quote-sub">요약도 아니고, 해석도 아니고, 판단도 아닌 — 있는 그대로 되비춰주는 기술</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>방식</th><th>설명</th><th>예시</th></tr>
+          <tr>
+            <td><strong>핵심 단어 반복</strong></td>
+            <td>감정적으로 무게가 실린 단어를 그대로 돌려줌</td>
+            <td>고객: "너무 지쳐있어요" → 코치: "지쳐있다고 하셨는데..."</td>
+          </tr>
+          <tr>
+            <td><strong>핵심 내용 요약</strong></td>
+            <td>코치의 해석 없이 핵심 내용을 간결하게 돌려줌</td>
+            <td>"A를 시도했는데 잘 안 됐고, 그 이후로 B가 어렵게 느껴지고 있다는 거죠?"</td>
+          </tr>
+          <tr>
+            <td><strong>감정 반영</strong></td>
+            <td>말의 내용보다 그 안에 담긴 감정의 결을 되돌려줌</td>
+            <td>"열심히 했는데 알아주지 않았다는... 그 느낌이 많이 남아있으신 것 같네요."</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">🎭 백트래킹 실전 예시</div>
+        <div class="d-line">
+          <span class="d-role d-client">고객</span>
+          <div class="d-text">"열심히 했는데 아무도 알아주지 않더라고요."</div>
+        </div>
+        <div class="d-line">
+          <span class="d-role d-coach">코치</span>
+          <div class="d-text">"열심히 했는데 알아주지 않았다는... 그 느낌이 많이 남아있으신 것 같네요." <em>(감정 반영 백트래킹)</em></div>
+        </div>
+        <div class="d-line">
+          <span class="d-role d-client">고객</span>
+          <div class="d-text">"네... 그냥 지쳐버린 것 같아요."</div>
+        </div>
+        <div class="d-line">
+          <span class="d-role d-coach">코치</span>
+          <div class="d-text">"지쳐버린 것 같다고 하셨는데... 그 지침이 어떤 지침인지 조금 더 말씀해주실 수 있나요?" <em>(핵심 단어 반복 + 개방형 질문)</em></div>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <p><strong>⚠ 주의:</strong> 코치가 무의식적으로 고객의 말을 '살짝 바꾸는 것'이 가장 흔한 실수입니다. 좋은 의도로 더 좋은 표현으로 정리해주려 하지만, 그 순간 고객은 자기 말이 아닌 코치의 말을 듣게 됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 4 ══════════════ -->
+  <div class="chapter" id="ch4">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 04</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">목표설정 5가지 원칙</h2>
+    <p class="chapter-desc">멘토코치 NLP 목표설정 프레임 — 고객이 진짜 원하는 방향으로 에너지를 모으는 과정입니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">멘토코치 NLP 목표설정 구조</div>
+      <div class="flow" style="justify-content: center;">
+        <div class="flow-step" style="background:#c8963e; color:#fff;">현재 상태 (PS)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#4a90d9; color:#fff;">적절한 자원 (Resources)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#2d7a4f; color:#fff;">원하는 상태 (DS)</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>원칙</th><th>핵심 질문</th><th>코치의 역할</th></tr>
+          <tr>
+            <td><strong>1. 원하는 것은?</strong></td>
+            <td>"어떻게 되길 원하세요?" "진짜 원하는 것은 무엇인가요?"</td>
+            <td>표면 목표가 아닌 진짜 원함을 찾는 출발점. 긍정적 언어로 언어화 돕기</td>
+          </tr>
+          <tr>
+            <td><strong>2. 현재 상태는?</strong></td>
+            <td>"지금 어떤 상황인가요?" "어떻게 느껴지세요?"</td>
+            <td>페이싱과 백트래킹으로 현재를 충분히 탐색. 판단 없이 있는 그대로 받아주기</td>
+          </tr>
+          <tr>
+            <td><strong>3. 원하는 상태는?</strong></td>
+            <td>"그 상태에 있을 때 어떤 모습인가요?" "몸에서 어떤 느낌이 드나요?"</td>
+            <td>바람직한 상태(DS)를 감각적으로 생생하게 그리도록 돕기</td>
+          </tr>
+          <tr>
+            <td><strong>4. 증거는?</strong></td>
+            <td>"목표에 도달했다는 걸 어떻게 알 수 있나요?" "무엇이 보이고, 들리고, 느껴지나요?"</td>
+            <td>감각적 증거 확인. 증거가 없으면 목표가 공중에 뜸</td>
+          </tr>
+          <tr>
+            <td><strong>5. 주변에 미치는 것은?</strong></td>
+            <td>"이 목표가 이루어지면 가족·관계·일에는 어떤 영향이 있나요?"</td>
+            <td>생태학적 점검 — 삶 전체와 조화로운지 확인</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 표면 목표 vs 진짜 목표</div>
+        <p>"살을 빼고 싶어요" → 진짜 원하는 건 <strong>자신감, 건강, 인정받음</strong><br>
+        "승진하고 싶어요" → 진짜 원하는 건 <strong>인정, 경제적 안정, 부모님 기대</strong><br>
+        표면 목표만 잡고 촉진하면 도착했을 때 공허함을 느끼는 경우가 생깁니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">SMART + NLP 통합 원칙</div>
+      <div class="card-grid">
+        <div class="card"><div class="card-title">S — Specific (구체적)</div><p class="card-text">"건강해지고 싶다" → "매일 아침 30분 걷겠다"처럼 명확하게 정의</p></div>
+        <div class="card"><div class="card-title">M — Measurable (측정 가능)</div><p class="card-text">"어느 정도 되면 됐다고 볼 수 있나요?" 달성 여부를 확인할 수 있어야 함</p></div>
+        <div class="card"><div class="card-title">A — Achievable (달성 가능)</div><p class="card-text">현실과 도전 사이의 균형. 너무 높으면 포기, 너무 낮으면 동기 없음</p></div>
+        <div class="card"><div class="card-title">긍정적 방향 (Toward Goal)</div><p class="card-text">"담배를 끊겠다" → "건강하고 활력 있는 몸을 만들겠다"로 전환</p></div>
+        <div class="card"><div class="card-title">자기 주도성</div><p class="card-text">목표의 실현이 고객 자신의 행동 안에 있어야 함. 타인에게 달린 목표는 아웃컴 아님</p></div>
+        <div class="card"><div class="card-title">생태학적 점검</div><p class="card-text">목표 달성 시 삶 전체에 미치는 영향 탐색. 조화로울 때 진짜 동기 생성</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 5 ══════════════ -->
+  <div class="chapter" id="ch5">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 05</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">아웃컴 프레임 (Outcome Frame)</h2>
+    <p class="chapter-desc">문제에서 원하는 결과로 초점을 이동시키는 사고의 틀 — 고객을 가능성의 공간으로 이동시킵니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">문제 프레임 vs 아웃컴 프레임</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>문제 프레임 (Problem Frame)</th><th>아웃컴 프레임 (Outcome Frame)</th></tr>
+          <tr><td>왜 이렇게 됐나요?</td><td>어떻게 되길 원하세요?</td></tr>
+          <tr><td>누구 잘못인가요?</td><td>당신이 할 수 있는 건 뭔가요?</td></tr>
+          <tr><td>뭐가 문제인가요?</td><td>원하는 결과는 무엇인가요?</td></tr>
+          <tr><td>왜 안 되나요?</td><td>되려면 무엇이 필요한가요?</td></tr>
+        </table>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">핵심 차이</div>
+        <p>문제 프레임에 머물면 고객은 <strong>설명하고 방어하고 탓하는</strong> 쪽으로 에너지를 씁니다. 아웃컴 프레임으로 전환되면 고객은 <strong>가능성을 탐색하고 행동을 설계</strong>하기 시작합니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">아웃컴 프레임 4단계</div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">📋 아웃컴 프레임 실전 예시 — "팀원들과 관계가 힘들어요"</div>
+
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"요즘 팀원들이랑 관계가 너무 힘들어요. 맨날 제가 다 해결해야 하고..."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">1단계</span><div class="d-text"><strong>현재 상태 파악</strong> — 페이싱 + 백트래킹</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"팀원들과 관계가 힘들고, 혼자 다 해결해야 한다는 느낌이 드시는군요. 그 힘듦이 언제부터 느껴지셨나요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">2단계</span><div class="d-text"><strong>원하는 것 명확화</strong> — 아웃컴 방향으로 전환</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 상황에서 어떻게 되길 원하세요? 이상적인 팀 관계가 된다면 어떤 모습일까요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">3단계</span><div class="d-text"><strong>자원 동원</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"과거에 팀원들과 잘 협력했던 순간이 있었나요? 그때 어떻게 하셨나요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">4단계</span><div class="d-text"><strong>바람직한 상태</strong> — 감각적으로 생생하게</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 이상적인 팀이 되었을 때, 출근하면서 어떤 기분이 드나요? 팀원들과 어떤 대화를 나누고 있나요?"</div></div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">아웃컴 6가지 핵심 질문</div>
+      <ul class="q-list">
+        <li><span class="q-icon">❶</span><div><strong>원하는 것:</strong> "당신이 원하는 것은 무엇인가요?" — 긍정적 언어로 원하는 상태 명확화</div></li>
+        <li><span class="q-icon">❷</span><div><strong>감각적 증거:</strong> "그것을 어떻게 알 수 있나요?" — 무엇이 보이고, 들리고, 느껴지는지</div></li>
+        <li><span class="q-icon">❸</span><div><strong>맥락:</strong> "언제, 어디서, 누구와 함께?" — 목표가 실현되는 맥락 구체화</div></li>
+        <li><span class="q-icon">❹</span><div><strong>자기 주도성:</strong> "그것은 당신에게 달려 있나요?" — 타인의 변화에 달린 목표는 아웃컴이 아님</div></li>
+        <li><span class="q-icon">❺</span><div><strong>긍정적 의도:</strong> "그것을 얻으면 무엇이 좋아지나요?" — 목표 너머의 진짜 원함 발견</div></li>
+        <li><span class="q-icon">❻</span><div><strong>생태학적 점검:</strong> "그것이 삶의 다른 부분에 미치는 영향은요?" — 삶 전체와의 조화 확인</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 6 ══════════════ -->
+  <div class="chapter" id="ch6">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 06</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">데카르트 4분할 · 행동 수반 질문</h2>
+    <p class="chapter-desc">4가지 관점에서 체계적으로 탐색하는 질문 프레임과 신체를 활용한 강력한 개입 기법입니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">데카르트 4분할 코칭 질문</div>
+      <p>①번만 탐색하면 긍정적 그림만 보이지만, ③④번까지 가면 <strong>변화를 원하면서도 변화를 막고 있는 내면</strong>을 만나게 됩니다. 이것이 진짜 알아차림입니다.</p>
+
+      <div class="quadrant">
+        <div class="quad">
+          <div class="quad-num">①</div>
+          <div class="quad-title">얻으면 어떤 일이 일어나나?</div>
+          <div class="quad-q">"자신감을 갖게 되면 어떤 일이 일어날까요?"</div>
+          <div class="quad-effect">→ 긍정적 결과 탐색, 동기·에너지 생성</div>
+        </div>
+        <div class="quad">
+          <div class="quad-num">②</div>
+          <div class="quad-title">얻지 못하면 어떤 일이 일어나나?</div>
+          <div class="quad-q">"자신감 없는 상태가 계속된다면 어떤 일이 일어날까요?"</div>
+          <div class="quad-effect">→ 변화 안 했을 때의 대가, 긴박감 생성</div>
+        </div>
+        <div class="quad">
+          <div class="quad-num">③</div>
+          <div class="quad-title">얻지 않으면 어떤 일이 일어나나?</div>
+          <div class="quad-q">"자신감을 갖지 않기로 선택한다면 무슨 일이 일어날까요?"</div>
+          <div class="quad-effect">→ 저항·두려움·숨겨진 의도 발견</div>
+        </div>
+        <div class="quad">
+          <div class="quad-num">④</div>
+          <div class="quad-title">얻지 않으면 무슨 일이 일어나지 않나?</div>
+          <div class="quad-q">"자신감을 갖지 않으면 일어나지 않는 일은 무엇인가요?"</div>
+          <div class="quad-effect">→ Secondary Gain, 변화를 막는 진짜 이유</div>
+        </div>
+      </div>
+
+      <div class="highlight">
+        <p><strong>Secondary Gain (2차적 이득):</strong> ④번 질문에서 자주 나타납니다. "자신감이 없으면 더 많은 책임을 질 일도 없죠", "실패할 일도 없고..." — 변화하지 않음으로써 보호받고 있는 것이 드러나는 순간입니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">행동을 수반하는 질문 기법</div>
+      <p>머리로 아는 것 → 말로 표현하는 것 → <strong>몸으로 경험하는 것</strong> 순서로 갈수록 변화의 깊이와 지속성이 달라집니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>기법</th><th>방법</th><th>효과</th></tr>
+          <tr><td><strong>신체 움직임 연결</strong></td><td>"지금 그 자신감 없는 상태를 몸으로 표현해보면 어떤 자세가 되나요?"</td><td>자세가 바뀌는 순간 감정·인식이 함께 변화 (Body-Mind Connection)</td></tr>
+          <tr><td><strong>공간 활용</strong></td><td>현재와 원하는 상태를 공간에 배치하고 실제로 이동</td><td>물리적 이동이 변화를 몸으로 경험하게 만듦</td></tr>
+          <tr><td><strong>역할극·시뮬레이션</strong></td><td>"다음 주 팀 회의에서 어떻게 말할지 지금 한번 해보시겠어요?"</td><td>머릿속 상상과 실제 말해보기는 완전히 다른 경험</td></tr>
+          <tr><td><strong>소규모 즉각 행동</strong></td><td>"그 결심을 한 문장으로 소리 내어 말해보시겠어요?"</td><td>소리 내어 말하거나 쓰는 행위가 뇌에 강하게 각인</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 7 ══════════════ -->
+  <div class="chapter" id="ch7">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 07</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">타임라인 워크 (Timeline Walk)</h2>
+    <p class="chapter-desc">"미래를 상상하는 것"에서 "미래를 살아보는 것"으로 — 걸으며 하는 코칭의 강력한 현장감.</p>
+
+    <div class="section reveal">
+      <div class="section-title">왜 강력한가</div>
+      <p>몸이 공간을 이동할 때 뇌는 <strong>"실제로 그 시간에 있다"</strong>는 신호를 받습니다. 상상이 아니라 경험이 됩니다. 코칭 세션 안에서 이미 작은 변화를 몸으로 경험하면, 세션 밖에서의 실제 변화로 이어질 가능성이 훨씬 높아집니다.</p>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">타임라인 워크 전체 대화 시나리오</div>
+      <p style="margin-bottom:16px;"><em>상황: 40대 중반 직장인, "하는 일이 맞는 건지 모르겠어요. 더 의미 있는 일을 하고 싶은데 막막해요."</em></p>
+
+      <div class="dialogue">
+        <div class="dialogue-title">🚶 타임라인 워크 실전 대화</div>
+
+        <div class="d-line"><span class="d-role d-note">설정</span><div class="d-text">코치가 바닥에 가상의 타임라인을 만들며 자연스럽게 안내합니다.</div></div>
+
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"잠깐, 우리 자리에서 일어나서 해볼까요? 부담 없이요. 지금 서 계신 이 자리가 현재예요. 저 앞쪽 방향이 미래고요."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">현재</span><div class="d-text"><strong>현재 지점 — 신체 알아차림</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"지금 이 자리, 현재에 서 계세요. 발바닥으로 바닥을 느껴보시고... 지금 몸에서 어떤 느낌이 드세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"음... 좀 무거운 느낌이요. 발이 땅에 붙어있는 것 같아요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"무겁고, 땅에 붙어있는 느낌... 그 느낌을 그냥 느껴보세요." <em>(침묵)</em></div></div>
+
+        <div class="d-line"><span class="d-role d-note">+6개월</span><div class="d-text"><strong>한 발짝 — 6개월 후</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"자, 이제 한 발짝만 앞으로 걸어보세요. 여기가 6개월 후예요. 걸으시면서 몸에서 무엇이 달라지는지 느껴보세요. 6개월 후, 지금 어디에 계세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"뭔가 조금 다른 걸 시작한 것 같은 느낌?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">+2년</span><div class="d-text"><strong>세 발짝 — 2년 후 (핵심 지점)</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"자, 이제 2년 후로 걸어가 볼게요. 한 발짝 더요... 2년 후, 지금 어느 위치에 있나요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"저... 제 이름으로 된 뭔가를 하고 있어요. 강의인지 컨설팅인지... 사람들 앞에 서 있어요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"사람들 앞에 서 있는 당신... 그 표정이 어떤가요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"웃고 있어요. 근데 떨리기도 하고."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 떨림은 어떤 떨림인가요? 두려움인가요, 아니면 다른 건가요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text"><em>(눈이 촉촉해지며)</em> "설레는 떨림이에요. 무서운 게 아니라."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">뒤돌기</span><div class="d-text"><strong>현재의 나에게 메시지</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"지금 2년 후에 서 계시죠. 뒤를 한번 돌아봐 주실 수 있어요? 현재의 나, 2년 전의 나에게 무슨 말을 해주고 싶으세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text"><em>(긴 침묵 후)</em> "... 그냥 시작해. 완벽하지 않아도 돼."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text"><em>(조용히)</em> "그냥 시작해. 완벽하지 않아도 돼... 지금 어떠세요?"</div></div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">코치 핵심 포인트</div>
+      <ul class="checklist">
+        <li><span class="check-icon">✓</span><div><strong>말을 많이 하지 않기</strong> — 고객이 공간을 이동하는 동안 침묵과 여백을 충분히 주기. 그 여백 안에서 알아차림이 일어남</div></li>
+        <li><span class="check-icon">✓</span><div><strong>신체 변화 놓치지 않기</strong> — 표정, 호흡, 자세, 목소리 톤의 변화가 말보다 먼저 신호를 줌</div></li>
+        <li><span class="check-icon">✓</span><div><strong>판단하거나 해석하지 않기</strong> — "그건 설레는 거네요"가 아니라 "그 떨림은 어떤 떨림인가요?"처럼 고객 스스로 의미를 만들도록</div></li>
+        <li><span class="check-icon">✓</span><div><strong>미래에서 온 말의 힘</strong> — "그냥 시작해, 완벽하지 않아도 돼"는 코치가 한 말이 아님. 고객이 미래의 자신에게서 들은 말이기 때문에 훨씬 강력하게 각인됨</div></li>
+      </ul>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">타임라인 × 앵커링 통합 기법 (슈퍼바이저 시연)</div>
+      <p>타임라인 워크의 확장 버전으로, 슈퍼바이저 실습 세션에서 시연된 기법입니다. 미래 시점에서 정점 에너지를 확인한 뒤, 그 상태를 VAK 세 채널(색깔·소리·단어)로 앵커링하여 현재로 가져옵니다. <strong>타임라인이 에너지를 끌어올리고, 앵커가 그 에너지를 일상에서 꺼낼 수 있게 저장</strong>합니다. → 자세한 앵커링 원리와 VAK별 적용은 Ch.17 참조.</p>
+
+      <div class="flow">
+        <div class="flow-step">① 원하는 상태 + 시간 정의</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">② 현재 출발점 각인</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">③ 한 발짝씩 이동</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:var(--accent); color:#fff;">④ 목표 시점 몰입 8점</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:var(--green); color:#fff;">⑤ VAK 앵커 설치</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">⑥ 현재 복귀 발동 확인</div>
+      </div>
+
+      <div class="highlight">
+        <p><strong>기존 타임라인과의 차이:</strong> 기존은 미래를 살아보고 메시지를 가져오는 것에서 끝납니다. 통합 버전은 목표 시점의 에너지가 정점(8점)에 달했을 때 VAK 앵커를 심고, 현재로 돌아와 그 앵커를 발동해 "작동됨"을 직접 확인합니다. 고객이 세션 밖 일상에서 혼자 쓸 수 있는 무기를 쥐여주는 것입니다.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>단계</th><th>핵심 행동</th><th>코치 질문</th></tr>
+          <tr><td><strong>① 정의</strong></td><td>원하는 상태를 명확히 언어화 + 이루어지는 시간 설정</td><td>"어떤 상태가 됐으면 하세요?" · "언제쯤이면 좋겠어요?"</td></tr>
+          <tr><td><strong>② 출발점</strong></td><td>현재 신체 감각을 점수(10점 만점)로 확인 후 각인</td><td>"지금 몇 점인가요?" · "몸 어디서 느껴지나요?"</td></tr>
+          <tr><td><strong>③ 이동</strong></td><td>한 발짝씩 중간 지점을 거쳐 목표 시점으로 이동</td><td>"몸에서 무엇이 달라지나요?"</td></tr>
+          <tr><td><strong>④ 정점 확인</strong></td><td>목표 시점에서 완전 몰입 후 점수 확인 (8점 이상 필요)</td><td>"지금 몇 점이에요?" · "몸에서 어떤 느낌이에요?"</td></tr>
+          <tr><td><strong>⑤ VAK 앵커</strong></td><td>색깔(V) → 소리/음악(A) → 단어(D) 순서로 세 채널 앵커 설치</td><td>"이 느낌이 색깔이라면?" · "어울리는 소리는?" · "단어 하나로 담는다면?"</td></tr>
+          <tr><td><strong>⑥ 발동 확인</strong></td><td>현재로 복귀 후 세 앵커를 동시에 발동하여 상태 복원 확인</td><td>"그 색·소리·단어를 함께 가져와보세요. 어떤가요?"</td></tr>
+        </table>
+      </div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">⚓ VAK 앵커 설치 실전 대화 — 목표 시점 도달 후</div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(목표 지점에 서서) "가슴이 열린 것 같아요. 뭔가 충만한 느낌이요. 8점이요, 진짜로 느껴져요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"좋아요. 지금 이 충만한 상태를 세 가지로 담아볼게요. 먼저, 지금 이 느낌이 색깔이라면 어떤 색이 떠오르나요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"주황색이요. 따뜻한 주황."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"주황. 눈앞에 선명하게 가져와보세요. (잠시) 이제, 지금 이 상태에 어울리는 소리나 음악이 있나요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"예전에 좋아했던 노래가 떠올라요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 노래를 마음속으로 들어보세요. (잠시) 마지막으로, 지금 이 상태를 단어 하나로 담는다면?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"'열림'이요."</div></div>
+        <div class="d-line"><span class="d-role d-note">현재 복귀</span><div class="d-text">처음 자리로 돌아온다.</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"이제 그 주황색을 가져오고, 그 노래를 흥얼거리고, '열림'을 마음속으로 말해보세요."</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text"><em>(10초 후, 놀란 표정으로)</em> "아까 그 느낌이 올라와요. 가슴이 열리는 그 느낌이."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"이 세 가지가 이제 코치님의 무기예요. 긴장되는 순간에 이 세 가지를 쓰세요. 6개월 후의 내가 지금으로 와줄 거예요."</div></div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 VAK × VAKD 연결 포인트</div>
+        <p>앵커 재료를 고객의 주 표상체계(Ch.09)에 맞추면 더 강하게 각인됩니다. 시각형(V)은 색깔·이미지, 청각형(A)은 소리·음악, 내적언어형(D)은 단어·문장 앵커가 주효합니다. 세 채널을 동시에 심는 것이 어느 유형에게도 작동하는 가장 안전한 방법입니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 8 ══════════════ -->
+  <div class="chapter" id="ch8">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 08</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">생각과 판단의 분리</h2>
+    <p class="chapter-desc">코치의 판단이 어떻게 고객의 세계를 덮어버리는지, 그리고 어떻게 분리하는지 학습합니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">생각 vs 판단</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>상황</th><th>❌ 판단 섞인 반응</th><th>✅ 생각만 있는 반응</th></tr>
+          <tr><td>"저 요즘 술을 너무 많이 마셔요"</td><td>"건강에 안 좋을 텐데..."</td><td>"요즘 술이 많아졌구나. 무슨 일이 있을까."</td></tr>
+          <tr><td>"팀원을 무시해버렸어요"</td><td>"그건 좀 심했네요"</td><td>"무시하게 된 상황이 있었구나."</td></tr>
+          <tr><td>"그냥 다 포기하고 싶어요"</td><td>"그러면 안 되죠"</td><td>"다 포기하고 싶을 만큼의 무언가가 있구나."</td></tr>
+      </table>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">실제 코칭 대화 비교</div>
+      <div class="dialogue">
+        <div class="dialogue-title">💡 같은 상황, 다른 결과</div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"아이가 자고 있었는데, 솔직히 조금 다행이다 싶었어요. 또 칭얼댈까봐."</div></div>
+      </div>
+
+      <div class="warning-box" style="margin-top:12px;">
+        <p><strong>❌ 판단이 있는 코치:</strong> "아, 그래도 엄마니까 아이한테 미안한 마음이 드는 게 당연하죠. 그 다행이라는 감정은 좀 들여다볼 필요가 있을 것 같아요."<br><br>
+        → 고객이 느끼는 것: '내 감정이 문제가 있다는 건가? 나쁜 엄마라고 생각하는 건가?' → 방어적이 되거나 자책으로 빠짐</p>
+      </div>
+
+      <div class="success-box" style="margin-top:8px;">
+        <p><strong>✅ 생각과 판단이 분리된 코치:</strong> "미안하기도 하고... 동시에 다행이다 싶기도 했군요. 그 두 감정이 동시에 있었던 거네요. 지금 그걸 말하면서 어떤 느낌이 드세요?"<br><br>
+        → 고객: "... 제가 너무 지쳐있는 것 같아요. 저도 누군가 챙겨줬으면 하는 것 같고."<br>
+        → 진짜 이야기(지쳐있는 한 사람)가 열림</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">판단을 내려놓는 훈련</div>
+      <ul class="checklist">
+        <li><span class="check-icon">◆</span><div><strong>알아차림 연습:</strong> 대화 중 "지금 내가 판단하고 있구나"를 먼저 알아채는 것 자체가 훈련. 판단이 올라오는 순간 속으로 "아, 판단이 왔네"하고 인식하고 내려놓기</div></li>
+        <li><span class="check-icon">◆</span><div><strong>호기심으로 전환:</strong> 판단이 올라올 때 "왜 저런 선택을 했을까?"라는 호기심으로 바꾸기 — 판단은 닫는 문, 호기심은 여는 문</div></li>
+        <li><span class="check-icon">◆</span><div><strong>자기 판단 알아차리기:</strong> 코치 자신에 대한 판단("내가 좋은 질문을 했나?", "이 방향이 맞나?")도 코칭 집중을 방해함</div></li>
+      </ul>
+      <div class="highlight">
+        <p><strong>핵심:</strong> 생각과 판단의 분리는 "나는 아무 생각이 없다"가 아닙니다. <strong>"내 생각이 옳다고 전제하지 않는다"</strong>는 것입니다. 고객의 세계를 고객의 눈으로 보는 것 — 그것이 코칭에서 판단을 분리해야 하는 진짜 이유입니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 9 ══════════════ -->
+  <div class="chapter" id="ch9">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 09</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">선호표상체계 VAKD</h2>
+    <p class="chapter-desc">사람마다 세상을 경험하고 정보를 처리하는 주된 감각 채널이 다릅니다. 고객의 채널로 들어가는 것이 가장 정교한 페이싱입니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">VAKD 4가지 표상체계</div>
+      <div class="vak-grid">
+        <div class="vak-card vak-v">
+          <div class="vak-badge">V</div>
+          <div class="vak-name">Visual — 시각형</div>
+          <div class="vak-desc">세상을 이미지와 그림으로 처리. 빠르게 말하고 눈을 위로 굴리는 경향.</div>
+          <div class="vak-keywords">
+            <span class="vak-kw">앞이 안 보여요</span>
+            <span class="vak-kw">그림이 안 그려져요</span>
+            <span class="vak-kw">밝은 미래</span>
+            <span class="vak-kw">명확하게 보고 싶어요</span>
+          </div>
+          <div class="vak-q">코칭 질문: "어떻게 보이세요?" · "그 장면을 그려보시면?"</div>
+        </div>
+        <div class="vak-card vak-a">
+          <div class="vak-badge">A</div>
+          <div class="vak-name">Auditory — 청각형</div>
+          <div class="vak-desc">소리와 언어로 처리. 말의 리듬·톤에 민감하고 일정한 리듬감이 있음.</div>
+          <div class="vak-keywords">
+            <span class="vak-kw">마음에 걸려요</span>
+            <span class="vak-kw">울림이 있어요</span>
+            <span class="vak-kw">소리가 안 맞아요</span>
+            <span class="vak-kw">말이 안 되잖아요</span>
+          </div>
+          <div class="vak-q">코칭 질문: "뭐라고 들리나요?" · "어떻게 말하고 있나요?"</div>
+        </div>
+        <div class="vak-card vak-k">
+          <div class="vak-badge">K</div>
+          <div class="vak-name">Kinesthetic — 신체감각형</div>
+          <div class="vak-desc">느낌과 감각으로 처리. 천천히 말하고 감정·신체 감각에 민감.</div>
+          <div class="vak-keywords">
+            <span class="vak-kw">무거운 느낌</span>
+            <span class="vak-kw">가슴이 답답해요</span>
+            <span class="vak-kw">잡히지 않아요</span>
+            <span class="vak-kw">따뜻한 사람</span>
+          </div>
+          <div class="vak-q">코칭 질문: "어떤 느낌이 드세요?" · "몸에서는요?"</div>
+        </div>
+        <div class="vak-card vak-d">
+          <div class="vak-badge">D</div>
+          <div class="vak-name">Digital — 내적언어형</div>
+          <div class="vak-desc">논리·데이터·의미로 처리. 감정 표현 적고 분석적. '왜?'를 자주 물음.</div>
+          <div class="vak-keywords">
+            <span class="vak-kw">논리적으로</span>
+            <span class="vak-kw">이해가 안 돼요</span>
+            <span class="vak-kw">합리적인 근거</span>
+            <span class="vak-kw">의미가 없어요</span>
+          </div>
+          <div class="vak-q">코칭 질문: "어떤 의미로 다가오세요?" · "논리적으로 정리하면?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">내적 표상(Internal Representation) 관점</div>
+      <p>D는 단순한 청각의 변형이 아닙니다. V·A·K가 외부 감각을 통해 세상을 받아들이는 것이라면, D는 <strong>외부 감각을 통하지 않고 내면에서 직접 생성되는 언어와 의미</strong>입니다. 이것이 진정한 의미의 '내적 표상'입니다.</p>
+
+      <div class="flow" style="flex-wrap:wrap; justify-content:center;">
+        <div class="flow-step">외부 세계</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">V·A·K 수신</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">D: 의미·개념으로 처리</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">내적 표상 완성</div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 D 유형 심화 코칭</div>
+        <p>D 유형은 감정을 언어로 합리화하는 경향이 강합니다. 진짜 감정을 느끼기보다 감정을 설명하고 분석하는 쪽으로 갑니다.<br><br>
+        <strong>핵심 개입:</strong> "지금 머리로는 잘 정리가 되셨는데요... 그 정리된 것을 가슴으로 느껴보면 어떤가요?"<br>
+        → D에서 K로 연결하는 순간, D 유형 고객이 처음으로 자신의 감정과 만나는 경우가 많습니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">VAKD × 앵커링 연결</div>
+      <p>고객의 주 표상체계를 파악하면 앵커(Ch.17)의 재료를 그 채널에 맞춰 심을 수 있습니다. 앵커가 고객의 주 채널과 일치할수록 강도와 지속성이 높아집니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>유형</th><th>신호 언어</th><th>앵커 재료</th><th>설치 질문</th></tr>
+          <tr><td><strong>V (시각형)</strong></td><td>"앞이 안 보여요", "그림이 그려져요"</td><td>색깔, 이미지, 장면</td><td>"이 느낌이 색깔이라면 어떤 색인가요?"</td></tr>
+          <tr><td><strong>A (청각형)</strong></td><td>"울림이 있어요", "마음에 걸려요"</td><td>소리, 음악, 목소리 톤</td><td>"이 상태에 어울리는 소리나 음악이 있나요?"</td></tr>
+          <tr><td><strong>K (신체감각형)</strong></td><td>"가슴이 답답해요", "무거운 느낌"</td><td>신체 동작, 자세, 호흡</td><td>"이 에너지를 담을 수 있는 동작이 있나요?"</td></tr>
+          <tr><td><strong>D (내적언어형)</strong></td><td>"논리적으로", "이해됐어요"</td><td>단어, 문장, 선언문</td><td>"이 상태를 단어 하나로 담는다면?"</td></tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 실전 팁 — 세 채널 동시 설치</div>
+        <p>고객의 주 표상체계를 확신하기 어려울 때는 V(색깔) → A(소리) → D(단어) 세 가지를 모두 심으세요. 어느 유형이든 하나는 강하게 작동하며, 세 채널이 동시에 연결될수록 앵커의 강도와 지속성이 훨씬 높아집니다. → 앵커링 심화 Ch.17 참조</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 10 ══════════════ -->
+  <div class="chapter" id="ch10">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 10</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">VAKD 선호도 진단 설문</h2>
+    <p class="chapter-desc">각 문항마다 가장 자연스럽게 느껴지는 것 하나를 선택하세요. V(시각) · A(청각) · K(신체감각) · D(내적언어) 4가지 유형으로 진단합니다. 정답이 없습니다.</p>
+
+    <div class="section reveal">
+      <div id="survey-form"></div>
+      <button class="score-btn" onclick="calcScore()">📊 결과 확인하기</button>
+      <div id="score-result">
+        <div class="score-bars">
+          <div class="score-row">
+            <div class="score-label">V (시각형)</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill bar-v" id="bar-v"></div></div>
+            <div class="score-count" id="cnt-v">0개</div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">A (청각형)</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill bar-a" id="bar-a"></div></div>
+            <div class="score-count" id="cnt-a">0개</div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">K (신체감각형)</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill bar-k" id="bar-k"></div></div>
+            <div class="score-count" id="cnt-k">0개</div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">D (내적언어형)</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill bar-d" id="bar-d"></div></div>
+            <div class="score-count" id="cnt-d">0개</div>
+          </div>
+        </div>
+        <div id="score-comment"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ APPENDIX ══════════════ -->
+  <!-- ══════════════ CHAPTER 13: 메타 모델 ══════════════ -->
+  <div class="chapter" id="ch13">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 13</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">메타 모델 (Meta Model)</h2>
+    <p class="chapter-desc">고객의 말 속에 숨어 있는 삭제·일반화·왜곡 패턴을 정밀 질문으로 복원하는 NLP의 핵심 언어 도구입니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">메타 모델이란?</div>
+      <div class="quote-box">
+        <p class="quote-text">"사람들이 말하는 것은 자신이 경험한 현실의 지도(map)이지, 현실 그 자체가 아니다."</p>
+        <p class="quote-sub">밴들러(Bandler)와 그린더(Grinder), 1975</p>
+      </div>
+      <p>사람의 뇌는 방대한 경험을 말로 전달할 때 자동으로 <strong>압축</strong>합니다. 이 과정에서 중요한 정보가 빠지고(삭제), 하나의 경험이 법칙이 되고(일반화), 현실이 비틀립니다(왜곡). 코치의 역할은 이 숨겨진 의미를 정밀 질문으로 복원하는 것입니다.</p>
+
+      <div class="flow" style="justify-content:center; flex-wrap:wrap;">
+        <div class="flow-step" style="background:#c8963e;color:#fff;">경험</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#4a5568;color:#fff;">뇌가 압축<br><small>(삭제·일반화·왜곡)</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#4a90d9;color:#fff;">말로 표현</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#2d7a4f;color:#fff;">메타 모델 질문<br><small>(복원)</small></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th></th><th>메타 모델</th><th>밀턴 모델</th></tr>
+          <tr><td><strong>방향</strong></td><td>모호 → <strong>정밀하게</strong></td><td>정밀 → <strong>모호하게</strong></td></tr>
+          <tr><td><strong>목적</strong></td><td>숨은 정보 복원</td><td>내면 탐색 공간 열기</td></tr>
+          <tr><td><strong>언제</strong></td><td>구체화가 필요할 때</td><td>저항 없이 변화 유도할 때</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 삭제 -->
+    <div class="section reveal">
+      <div class="section-title">🗑️ 삭제 (Deletion) — 5가지</div>
+      <p>정보가 말에서 <strong>빠져나간</strong> 패턴입니다. 중요한 대상·행위자·기준이 생략되어 있습니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>패턴</th><th>특징</th><th>고객 예시</th><th>코치 질문</th></tr>
+          <tr>
+            <td><strong>① 단순 삭제</strong></td>
+            <td>무엇이, 누가 빠짐</td>
+            <td>"힘들어요." / "겁이 나요."</td>
+            <td>"무엇이 힘드신가요?" / "무엇이 겁나시는 건가요?"</td>
+          </tr>
+          <tr>
+            <td><strong>② 비교 삭제</strong></td>
+            <td>비교 기준이 빠짐</td>
+            <td>"저는 부족해요." / "더 잘하고 싶어요."</td>
+            <td>"무엇과 비교해서 부족하다는 건가요?" / "어느 정도가 되어야 충분한가요?"</td>
+          </tr>
+          <tr>
+            <td><strong>③ 행위자 삭제</strong></td>
+            <td>주어·주체가 빠짐</td>
+            <td>"항상 무시당해요." / "자꾸 상처를 받아요."</td>
+            <td>"누가 무시한다는 건가요?" / "누구에게 상처받으신 건가요?"</td>
+          </tr>
+          <tr>
+            <td><strong>④ 명사화</strong></td>
+            <td>과정(동사)이 사물(명사)로 굳음</td>
+            <td>"소통이 없어요." / "우울이 심해요."</td>
+            <td>"어떻게 소통이 이루어지지 않고 있나요?" / "우울함이 어떤 식으로 경험되나요?"</td>
+          </tr>
+          <tr>
+            <td><strong>⑤ 불특정 동사</strong></td>
+            <td>동사가 너무 모호함</td>
+            <td>"남편이 저를 무시해요." / "팀장이 힘들게 해요."</td>
+            <td>"구체적으로 어떻게 할 때 무시당한다 느끼세요?" / "어떤 행동이 가장 힘드세요?"</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 명사화 핵심 포인트</div>
+        <p>명사화는 변화를 불가능하게 만드는 언어입니다. <strong>"소통이 없다"</strong>(사물) → <strong>"소통하지 않고 있다"</strong>(과정)으로 되살리면, 지금 이 순간에도 바꿀 수 있다는 가능성이 열립니다.</p>
+      </div>
+    </div>
+
+    <!-- 일반화 -->
+    <div class="section reveal">
+      <div class="section-title">🌐 일반화 (Generalization) — 3가지</div>
+      <p>하나의 경험을 <strong>모든 상황의 법칙으로 확장</strong>하는 패턴입니다. 변화를 막는 가장 강력한 장벽입니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>패턴</th><th>특징</th><th>고객 예시</th><th>코치 질문</th></tr>
+          <tr>
+            <td><strong>① 보편적 수량사</strong></td>
+            <td>항상·절대·모두·아무도 — 예외가 없다</td>
+            <td>"저는 항상 실패해요." / "아무도 저를 이해 못 해요."</td>
+            <td>"항상요? 단 한 번도 잘 된 적이 없었나요?" / "단 한 사람도요?"</td>
+          </tr>
+          <tr>
+            <td><strong>② 양상 조작어 (가능성)</strong></td>
+            <td>~할 수 없다 — 선택 자체를 차단</td>
+            <td>"저는 거절을 못 해요." / "리더십을 발휘할 수가 없어요."</td>
+            <td>"거절을 하면 어떤 일이 생길 것 같으세요?" / "만약 할 수 있다면 어떻게 하고 싶으세요?"</td>
+          </tr>
+          <tr>
+            <td><strong>③ 양상 조작어 (필연성)</strong></td>
+            <td>~해야만 한다 — 선택이 아닌 의무</td>
+            <td>"저는 완벽해야만 해요." / "항상 강해야 해요."</td>
+            <td>"완벽하지 않으면 어떻게 되나요?" / "그 규칙이 언제부터 생긴 건가요?"</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 보편적 수량사 개입 포인트</div>
+        <p>예외를 단 하나만 발견해도 "항상"이라는 굳은 법칙에 금이 갑니다. <strong>그 틈이 변화의 시작</strong>입니다. 단, 반박처럼 들리지 않도록 부드럽게 질문하는 것이 핵심입니다.</p>
+      </div>
+    </div>
+
+    <!-- 왜곡 -->
+    <div class="section reveal">
+      <div class="section-title">🌀 왜곡 (Distortion) — 5가지</div>
+      <p>경험의 의미를 <strong>실제와 다르게 비틀거나 가정</strong>하는 패턴입니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>패턴</th><th>특징</th><th>고객 예시</th><th>코치 질문</th></tr>
+          <tr>
+            <td><strong>① 마음 읽기</strong></td>
+            <td>증거 없이 타인 마음을 확신</td>
+            <td>"팀장이 저를 싫어하는 거 알아요." / "남편이 실망했을 거예요."</td>
+            <td>"어떻게 아세요? 어떤 것을 보고 느끼셨나요?" / "그분이 그렇게 말씀하셨나요?"</td>
+          </tr>
+          <tr>
+            <td><strong>② 원인-결과</strong></td>
+            <td>A 때문에 B가 자동으로 된다</td>
+            <td>"상사가 무시하니까 자신감이 없는 거예요." / "엄마 잔소리에 아무것도 하기 싫어져요."</td>
+            <td>"상사가 바뀌지 않으면 자신감은 영원히 없어야 하나요?" / "그 사이에 무슨 일이 일어나는 건가요?"</td>
+          </tr>
+          <tr>
+            <td><strong>③ 복합 동치</strong></td>
+            <td>A = B 라는 등호를 붙임</td>
+            <td>"꽃을 안 사줘요 = 사랑하지 않는 거죠." / "울었어요 = 제가 약한 거예요."</td>
+            <td>"꽃을 안 사주는 것이 어떻게 사랑하지 않는다는 것과 같은 말이 되나요?" / "우는 것이 왜 약한 것과 같다고 느끼시나요?"</td>
+          </tr>
+          <tr>
+            <td><strong>④ 전제</strong></td>
+            <td>말 속에 숨은 당연한 가정</td>
+            <td>"언제쯤 저도 행복해질 수 있을까요?" / "왜 저는 의지력이 없을까요?"</td>
+            <td>"지금 행복하지 않다고 느끼시는 건가요?" / "의지력이 없다는 근거가 무엇인가요?"</td>
+          </tr>
+          <tr>
+            <td><strong>⑤ 독심술의 역</strong></td>
+            <td>판단의 주체가 없는 진리 선언</td>
+            <td>"그렇게 하는 건 잘못된 거잖아요." / "나이 들면 꿈은 포기해야죠."</td>
+            <td>"누가 그렇게 말했나요?" / "그게 누구의 기준인가요?"</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 전체 구조 요약 -->
+    <div class="section reveal">
+      <div class="section-title">📊 메타 모델 13가지 전체 구조</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>분류</th><th>패턴</th><th>핵심 질문 방향</th></tr>
+          <tr><td rowspan="5" style="background:#fef3c7;font-weight:700;color:#b45309;">삭제<br>Deletion</td><td>① 단순 삭제</td><td>"무엇이?" "누가?"</td></tr>
+          <tr><td>② 비교 삭제</td><td>"무엇과 비교해서?"</td></tr>
+          <tr><td>③ 행위자 삭제</td><td>"누가?"</td></tr>
+          <tr><td>④ 명사화</td><td>"어떻게 일어나고 있나요?"</td></tr>
+          <tr><td>⑤ 불특정 동사</td><td>"구체적으로 어떻게?"</td></tr>
+          <tr><td rowspan="3" style="background:#dbeafe;font-weight:700;color:#1d4ed8;">일반화<br>Generalization</td><td>① 보편적 수량사</td><td>"단 한 번도 예외가 없나요?"</td></tr>
+          <tr><td>② 양상 조작어 (가능성)</td><td>"하면 어떻게 되나요?"</td></tr>
+          <tr><td>③ 양상 조작어 (필연성)</td><td>"안 하면 어떻게 되나요?"</td></tr>
+          <tr><td rowspan="5" style="background:#d1fae5;font-weight:700;color:#065f46;">왜곡<br>Distortion</td><td>① 마음 읽기</td><td>"어떻게 아세요?"</td></tr>
+          <tr><td>② 원인-결과</td><td>"그 사이에 무슨 일이?"</td></tr>
+          <tr><td>③ 복합 동치</td><td>"어떻게 같은 말이 되나요?"</td></tr>
+          <tr><td>④ 전제</td><td>"그 가정이 사실인가요?"</td></tr>
+          <tr><td>⑤ 독심술의 역</td><td>"누구의 기준인가요?"</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 종합 실전 대화 -->
+    <div class="section reveal">
+      <div class="section-title">🎭 종합 실전 대화</div>
+      <div class="dialogue">
+        <div class="dialogue-title">💬 한 문장 안에 여러 패턴이 등장하는 경우</div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"저는 원래 리더십이 없어요. 팀원들이 항상 제 말을 무시하거든요. 제가 말을 못해서 그런 것 같아요."</div></div>
+        <div class="d-line" style="flex-direction:column; gap:6px; padding:10px 0;">
+          <div style="font-size:12px; color:var(--sky); font-weight:700;">🔍 패턴 분석</div>
+          <div style="font-size:13px; color:var(--ink-light);">• "원래 리더십이 없어요" → <strong>명사화 + 전제</strong> (변할 수 없는 것처럼 굳힘)</div>
+          <div style="font-size:13px; color:var(--ink-light);">• "항상 무시해요" → <strong>보편적 수량사</strong></div>
+          <div style="font-size:13px; color:var(--ink-light);">• "말을 못해서 그런 것" → <strong>원인-결과</strong></div>
+        </div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"팀원들이 항상 무시한다고 하셨는데, 단 한 번도 코치님 말에 귀 기울인 적이 없었나요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"음... 사실 A씨는 잘 들어주긴 해요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"A씨가 들어줄 때와, 다른 분들이 안 들을 때... 어떤 차이가 있다고 느끼세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"A씨한테는 제가 좀 더 편하게 얘기하는 것 같아요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"편하게 얘기할 때와 그렇지 않을 때, 코치님의 말하는 방식이 어떻게 달라지나요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"... 제가 뭔가 달리 하고 있는 것 같기도 하네요."</div></div>
+      </div>
+      <div class="tip-box" style="margin-top:16px;">
+        <div class="tip-label">⚡ 핵심 원칙</div>
+        <p>한 번에 하나의 패턴만 집어서 질문합니다. 여러 패턴이 보여도 가장 중요한 것 하나에 집중하세요. 연속으로 질문하면 취조가 됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 14: 메타 모델 퀴즈 ══════════════ -->
+  <div class="chapter" id="ch14">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 14</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">메타 모델 퀴즈</h2>
+    <p class="chapter-desc">고객의 답변이 삭제·왜곡·일반화의 어떤 유형인지 판별하고, 복원 질문을 직접 작성해보는 실습입니다.</p>
+
+    <div class="section reveal">
+      <div class="quote-box">
+        <p class="quote-text">아래 고객의 말이 어떤 메타 모델 패턴인지 찾고, 복원할 수 있는 코치 질문을 작성해보세요.</p>
+        <p class="quote-sub">삭제(D) · 일반화(G) · 왜곡(Dist) 중 어떤 유형인지, 그리고 세부 패턴도 적어보세요.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>#</th><th>고객의 말</th><th>패턴 유형</th><th>복원 질문</th></tr>
+          <tr><td>1</td><td>나는 할 수 없어요.</td><td></td><td></td></tr>
+          <tr><td>2</td><td>나는 일을 해야만 합니다.</td><td></td><td></td></tr>
+          <tr><td>3</td><td>나를 좋아하는 사람은 아무도 없어요.</td><td></td><td></td></tr>
+          <tr><td>4</td><td>그가 나를 미치게 했습니다.</td><td></td><td></td></tr>
+          <tr><td>5</td><td>그는 나를 싫어해요.</td><td></td><td></td></tr>
+          <tr><td>6</td><td>인생은 험악한 것예요.</td><td></td><td></td></tr>
+          <tr><td>7</td><td>그 아이가 일을 망쳤어요.</td><td></td><td></td></tr>
+          <tr><td>8</td><td>어른들은 다 뒤 꼬였어요.</td><td></td><td></td></tr>
+          <tr><td>9</td><td>김부장은 나를 미워해요.</td><td></td><td></td></tr>
+          <tr><td>10</td><td>나는 내 아이를 사랑합니다.</td><td></td><td></td></tr>
+          <tr><td>11</td><td>기분이 나빴어요.</td><td></td><td></td></tr>
+          <tr><td>12</td><td>내 아들은 골칫거리예요.</td><td></td><td></td></tr>
+          <tr><td>13</td><td>내 아내는 내게 관심이 없어요.</td><td></td><td></td></tr>
+          <tr><td>14</td><td>나는 참을성이 많아야 해요.</td><td></td><td></td></tr>
+          <tr><td>15</td><td>세상은 괴로운 거예요.</td><td></td><td></td></tr>
+          <tr><td>16</td><td>그 여자가 나를 미워하는 것을 압니다.</td><td></td><td></td></tr>
+          <tr><td>17</td><td>그녀가 나를 미치게 해요.</td><td></td><td></td></tr>
+          <tr><td>18</td><td>사람들은 내 말을 듣지 않아요.</td><td></td><td></td></tr>
+          <tr><td>19</td><td>당신은 나를 싫어해요.</td><td></td><td></td></tr>
+          <tr><td>20</td><td>내가 그 사람을 보살펴야 합니다.</td><td></td><td></td></tr>
+          <tr><td>21</td><td>당신이 나를 슬프게 하는군요.</td><td></td><td></td></tr>
+          <tr><td>22</td><td>이곳에는 대화가 없어요.</td><td></td><td></td></tr>
+          <tr><td>23</td><td>내가 얼마나 괴로운지 남편이 안다면 그렇게 하지 않았을 텐데.</td><td></td><td></td></tr>
+          <tr><td>24</td><td>난 불편해요.</td><td></td><td></td></tr>
+          <tr><td>25</td><td>그 여자는 내 말을 항상 듣지 않아요.</td><td></td><td></td></tr>
+          <tr><td>26</td><td>일관성이 없다는 것은 나쁜 일이지요.</td><td></td><td></td></tr>
+          <tr><td>27</td><td>그 사람에게 사실대로 말할 수가 없어요.</td><td></td><td></td></tr>
+          <tr><td>28</td><td>그 사람은 날 거부해요.</td><td></td><td></td></tr>
+          <tr><td>29</td><td>그 여자는 항상 나한테 소리 질러요.</td><td></td><td></td></tr>
+          <tr><td>30</td><td>그 사람이 더 나아요.</td><td></td><td></td></tr>
+        </table>
+      </div>
+
+      <div class="warning-box">
+        <p><strong>📌 활용 방법:</strong> 각 문항의 패턴 유형 칸에는 삭제·일반화·왜곡과 세부 패턴명을, 복원 질문 칸에는 코치로서 할 수 있는 질문을 직접 작성해보세요. 정답이 하나인 문항도 있고, 복합 패턴인 경우도 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 15: 밀턴 모델 ══════════════ -->
+  <div class="chapter" id="ch15">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 15</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">밀턴 모델 (Milton Model)</h2>
+    <p class="chapter-desc">메타 모델과 반대 방향 — 말을 의도적으로 넓고 모호하게 만들어 고객 스스로 내면의 답을 찾도록 돕는 언어 기법입니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">밀턴 모델이란?</div>
+      <div class="quote-box">
+        <p class="quote-text">"말을 일부러 넓고 모호하게 만들어서, 고객이 자신만의 의미로 채우게 한다."</p>
+        <p class="quote-sub">최면치료사 밀턴 에릭슨(Milton Erickson)의 언어 패턴을 밴들러·그린더가 분석·정리</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">구체적인 말</div>
+          <p class="card-text">코치의 세계를 전달합니다. 고객이 코치의 언어 안으로 들어가게 됩니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌊</div>
+          <div class="card-title">모호한 말</div>
+          <p class="card-text">고객의 세계가 채워집니다. 고객이 자신만의 의미로 빈칸을 스스로 메웁니다.</p>
+        </div>
+      </div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">💡 두 가지 접근의 차이</div>
+        <div class="d-line"><span class="d-role" style="background:#c0392b;color:#fff;">❌</span><div class="d-text">"자신감 있게 발표하는 모습을 상상해보세요." → 코치가 정의한 '자신감'을 주입</div></div>
+        <div class="d-line"><span class="d-role" style="background:#2d7a4f;color:#fff;">✅</span><div class="d-text">"가장 편안하게 자신을 표현할 수 있는 순간을 느껴보세요." → 고객 내면에서 자신만의 '편안함'이 떠오름</div></div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">밀턴 모델 8가지 핵심 패턴</div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>패턴</th><th>특징</th><th>예시 언어</th></tr>
+          <tr>
+            <td><strong>① 모호한 지시문</strong><br><small>Unspecified Verbs</small></td>
+            <td>어떻게 하라는 구체 지시 없음 → 고객이 자신에게 맞는 방식으로 채움</td>
+            <td>"그냥 편안하게 느껴보세요." / "자연스럽게 알아차리게 될 거예요."</td>
+          </tr>
+          <tr>
+            <td><strong>② 마음 읽기 (긍정적)</strong><br><small>Mind Reading</small></td>
+            <td>메타 모델의 마음 읽기를 라포 강화에 활용</td>
+            <td>"지금 코치님이 뭔가 중요한 것을 느끼고 계신다는 걸 알아요."</td>
+          </tr>
+          <tr>
+            <td><strong>③ 인과 연결</strong><br><small>Cause and Effect</small></td>
+            <td>A 하면 → B가 된다는 연결로 변화를 유도</td>
+            <td>"숨을 깊게 쉬면 쉴수록, 더 편안해질 거예요." / "이 질문에 대해 생각하다 보면, 자연스럽게 답이 떠오를 거예요."</td>
+          </tr>
+          <tr>
+            <td><strong>④ 전제 (긍정적)</strong><br><small>Presuppositions</small></td>
+            <td>변화가 일어난다는 걸 당연하게 전제로 심어놓음</td>
+            <td>"언제 변화가 시작될지 궁금하시죠?" / "어느 순간 그 해답을 발견하게 되실 거예요."</td>
+          </tr>
+          <tr>
+            <td><strong>⑤ 보편적 수량사 (긍정적)</strong><br><small>Universal Quantifiers</small></td>
+            <td>누구나·모든 경험에 가능성 열기</td>
+            <td>"누구나 내면에 이미 그 답을 가지고 있어요." / "모든 경험은 당신에게 뭔가를 가르쳐주고 있어요."</td>
+          </tr>
+          <tr>
+            <td><strong>⑥ 포함적 선택</strong><br><small>Inclusive Or</small></td>
+            <td>어떤 선택을 해도 원하는 방향으로 가도록 설계</td>
+            <td>"지금 바로 떠오를 수도 있고, 나중에 불현듯 떠오를 수도 있어요." → 어느 쪽이든 '떠오른다'는 전제</td>
+          </tr>
+          <tr>
+            <td><strong>⑦ 인용</strong><br><small>Quotes</small></td>
+            <td>다른 사람의 말을 빌려 전달 → 저항이 줄어듦</td>
+            <td>"어떤 분이 이런 말씀을 하시더라고요. '내가 변할 준비가 됐을 때, 이미 변화는 시작되어 있었다'고요."</td>
+          </tr>
+          <tr>
+            <td><strong>⑧ 이중 구속</strong><br><small>Double Bind</small></td>
+            <td>두 선택지 모두 원하는 방향으로 가도록 설계</td>
+            <td>"오늘 세션에서 한 가지를 가져가신다면, 지금 떠오르나요? 아니면 집에 가시면서 떠오를 것 같으세요?" → 어느 쪽이든 '가져간다'는 전제</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">메타 모델 ↔ 밀턴 모델 언제 쓰나?</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>상황</th><th>적합한 모델</th></tr>
+          <tr><td>고객이 막혀 있고 구체화가 필요할 때</td><td>✅ <strong>메타 모델</strong> (정밀 질문)</td></tr>
+          <tr><td>고객이 저항하거나 방어적일 때</td><td>✅ <strong>밀턴 모델</strong> (모호하게 열어주기)</td></tr>
+          <tr><td>고객이 가능성을 닫고 있을 때</td><td>✅ <strong>밀턴 모델</strong> (전제·포함적 선택)</td></tr>
+          <tr><td>목표를 감각적으로 생생하게 그릴 때</td><td>✅ <strong>밀턴 모델</strong> (유도)</td></tr>
+          <tr><td>고객의 말 속 패턴을 짚어줄 때</td><td>✅ <strong>메타 모델</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="highlight">
+        <p><strong>핵심 요약</strong><br>
+        메타 모델 = 고객의 말을 <strong>파고들어</strong> 명확하게<br>
+        밀턴 모델 = 고객의 내면이 <strong>스스로 열리도록</strong> 공간 만들기</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ 추가 세션 예정 ══════════════ -->
+  <div class="chapter" id="ch12">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">추가 세션</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">추가 학습 세션 (업데이트 예정)</h2>
+    <p class="chapter-desc">슈퍼바이저 학습이 진행되면서 새로운 세션 내용이 추가될 공간입니다.</p>
+
+    <div class="section reveal">
+      <div class="coming-soon">
+        <div class="cs-icon">📚</div>
+        <div class="cs-text">다음 세션 내용이 준비 중입니다</div>
+        <p class="cs-sub">학습이 진행되면 새로운 챕터가 추가됩니다. 코치님의 슈퍼바이저 학습 여정을 응원합니다.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>예정 주제</th><th>상태</th></tr>
+          <tr><td>앵커링(Anchoring) 심화 실습</td><td>✅ 완료 (Ch.17)</td></tr>
+          <tr><td>세 가지 입장 (Triple Perceptual Positions)</td><td>✅ 완료 (Ch.16)</td></tr>
+          <tr><td>타임라인 × 앵커링 통합 기법</td><td>✅ 완료 (Ch.07 확장)</td></tr>
+          <tr><td>신경 논리 레벨 (Neuro-Logical Level)</td><td>✅ 완료 (Ch.18)</td></tr>
+          <tr><td>리프레이밍(Reframing) 기법</td><td>🔜 예정</td></tr>
+          <tr><td>메타 모델 질문 심화</td><td>✅ 완료 (Ch.13~14)</td></tr>
+          <tr><td>밀턴 모델 (간접 언어)</td><td>✅ 완료 (Ch.15)</td></tr>
+          <tr><td>부분통합 (Parts Integration)</td><td>🔜 예정</td></tr>
+          <tr><td>믿음 변화 기법</td><td>🔜 예정</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 16: 세 가지 입장 ══════════════ -->
+  <div class="chapter" id="ch16">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 16</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">세 가지 입장 (Triple Perceptual Positions)</h2>
+    <p class="chapter-desc">같은 상황을 나 자신·상대방·관찰자의 세 시점에서 경험하며 관계 갈등을 입체적으로 해소하는 NLP 핵심 기법입니다. 슈퍼바이저 실습 세션에서 직접 시연된 내용을 정리했습니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">세 가지 입장의 개념</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>입장</th><th>시점</th><th>인식 방식</th><th>키워드</th></tr>
+          <tr><td><strong>1차적 위치</strong><br>자신의 입장 (First Position)</td><td>나 자신</td><td>자신의 오감으로 상황 인식 — 주관적 몰입</td><td>분노, 억울함, 나의 감정</td></tr>
+          <tr><td><strong>2차적 위치</strong><br>상대방 입장 (Second Position)</td><td>상대방</td><td>상대방의 오감으로 상황 인식 — 공감적 몰입<br>상대방의 신발을 신고, 옷을 입고, 자리에 앉아서 그의 자세·몸짓·표정·목소리로 그 상황을 경험</td><td>압박감, 미안함, 상대의 고충</td></tr>
+          <tr><td><strong>3차적 위치</strong><br>관찰자 입장 (Third Position / Meta Position)</td><td>신뢰·존경하는 제3의 인물</td><td>제3자의 오감으로 상황 인식 — 객관적 몰입<br>객관적으로 관찰·분석하면서 얻은 통찰력을 자신에게 적용</td><td>평온, 통찰, 연민, 명료함</td></tr>
+        </table>
+      </div>
+
+      <div class="highlight">
+        <p><strong>왜 세 입장인가:</strong> 갈등 상황에서 우리는 대부분 1차 위치(내 감정)에만 머뭅니다. 2·3차 위치를 경험하면 "상대가 왜 그랬는지"를 분석이 아닌 체험으로 이해하게 되며, 고객 스스로 해결의 실마리를 발견합니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">입장 전환 시 상태 단절 (Break State) — 핵심</div>
+      <p>전환이 실패하는 가장 큰 이유는 이전 입장의 감정을 그대로 들고 다음 입장으로 넘어가기 때문입니다. 1차 위치에서 분노가 가득한 상태로 2차 위치(상대방 입장)로 가면, 결국 "상대가 나쁜 사람"이라는 결론만 나옵니다. 반드시 단절 기법을 써야 합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>단절 단계</th><th>방법</th><th>예시 질문</th></tr>
+          <tr><td><strong>① 명시적 공간 분리</strong></td><td>물리적으로 위치를 이동. 이전 자리를 "나의 자리"로 명명하고 실제로 벗어남</td><td>"이 자리가 나의 자리였어요. 이제 살짝 옆으로 이동해볼게요."</td></tr>
+          <tr><td><strong>② 감정 내려놓기</strong></td><td>이전 감정을 의식적으로 분리하는 동작 유도 — 손을 펼쳐 내려놓는 제스처</td><td>"이 무거운 감정들을 여기 잠깐 내려놓고 가요. 내 것이지만, 잠깐만 옆에 두는 거예요."</td></tr>
+          <tr><td><strong>③ 신체 리셋</strong></td><td>호흡과 어깨 내리기로 신체 중립 상태 확인</td><td>"어깨 좀 내려볼게요. 숨 한번 깊게. (잠시 침묵) 지금 무겁지 않죠?"</td></tr>
+          <tr><td><strong>④ 새 역할 부여</strong></td><td>다음 입장을 명확하게 선언하고 신체로 입장</td><td>"이제 팀장님 자리로 가볼게요. 팀장님의 신발을 신고, 팀장님 눈으로 그 날 아침을 보는 거예요."</td></tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 실습 자료 — 상태 단절 예시 질문</div>
+        <p><strong>1차 → 2차 전환 단절:</strong> "오늘 아침은 드셨나요? 어떤 음식을 드셨는지? 맛은 어땠는지?"<br>
+        <strong>2차 → 3차 전환 단절:</strong> "오늘 여기로 어떻게 오셨는지? 교통 상황은 어땠는지요?"<br>
+        평범한 일상 질문으로 뇌를 전환 모드로 만드는 것입니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">8단계 완전 실습 프로토콜 (슈퍼바이저 자료)</div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">📋 세 가지 입장 체험하기 — 전체 흐름</div>
+
+        <div class="d-line"><span class="d-role d-note">1단계</span><div class="d-text"><strong>갈등 상황 파악</strong><br>최근 또는 이전에 크게 갈등을 경험한 사례 파악 (구체적 내용·설명 불필요) → "그때 어떤 감정이었는지?" (가장 큰 감정 하나를 정한다) → "그 감정이 현재 상태는 10점 만점에 몇 점인지?" → "원하는 상태를 10점 만점에 몇 점이면 만족스러운지?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">2단계</span><div class="d-text"><strong>세 자리 공간 설정</strong><br>1차 위치(자신), 2차 위치(상대방), 3차 위치(존경하는 분)의 장소를 물리적으로 정한다 → "자신이 서 있는 곳을 1차 위치로 본다면, 상대방은 어디에 있을까요?" → "그러면 존경하는 분은 어디에 있을까요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">3단계</span><div class="d-text"><strong>1차 위치 — 완전 몰입 + 감정 확인</strong><br>"고객의 자리(1차 위치)에서 온전히 자신이 되어 그 갈등 상황을 다시 경험 → 상대방을 바라보세요. 상대방이 무슨 말을 하는지, 어떤 표정인지를 들어보세요. 상대방의 표정과 말을 들어보니 지금 감정은 어떤가요?" → "그 감정이 몇 점인가요?" → "좋습니다. 상대방에게 어떤 말을 해주고 싶은가요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">단절</span><div class="d-text"><strong>[ 상태 단절 ] "오늘 아침은 드셨나요? 어떤 음식을 드셨는지? 맛은 어땠는지? 등"</strong></div></div>
+
+        <div class="d-line"><span class="d-role d-note">4단계</span><div class="d-text"><strong>2차 위치 — 상대방 입장 완전 몰입</strong><br>"상대방의 자리(2차 위치)에서 온전히 상대방의 입장에서 볼 수 있을까요? 상대방의 표정을 보시고, 상대방의 신발을 신어 보시고, 상대방의 옷을 입어볼 수 있을까요? 어떤 느낌인가요?" → "좋습니다. 상대방이 되어보니 어떤 기분인가요?" → "1차 위치에 있는 고객님에게 어떤 말을 하고 싶은가요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">단절</span><div class="d-text"><strong>[ 상태 단절 ] "오늘 여기로 어떻게 오셨는지? 교통 상황은 어땠는지요? 등"</strong></div></div>
+
+        <div class="d-line"><span class="d-role d-note">5단계</span><div class="d-text"><strong>3차 위치 — 존경하는 분 입장 완전 몰입</strong><br>"존경하는 분의 자리(3차 위치)에 가셔서 온전히 존경하는 분의 입장에서 볼 수 있을까요? 존경하는 분의 표정을 보시고, 포옹을 해보시고, 그분의 체온을 느껴보시고, 그분과 하나가 되었다고 상상해 볼 수 있을까요?" → "존경하는 분의 관점에서 바라보니 어떤가요?" → "1차 위치에 있는 고객님에게 어떤 말을 해주고 싶은가요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">6단계</span><div class="d-text"><strong>1차 위치 복귀 — 재경험 및 감정 점수 확인</strong><br>고객은 다시 제1의 위치로 돌아가 갈등 상황을 다시 경험한다. 감정 상태가 몇 점인지 확인한다. 경험이 충분치 않다고 판단되면 앞 단계를 되풀이한다.</div></div>
+
+        <div class="d-line"><span class="d-role d-note">7단계</span><div class="d-text"><strong>미래 보조 맞추기 (Future Pacing)</strong><br>"앞으로 유사한 상황이 발생한다면 어떻게 대응하실 생각인가요?" → "그 상황을 미리 상상해 볼 수 있을까요? 어떻게 대응하고 있는가요?" → "기분은 어떤가요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">8단계</span><div class="d-text"><strong>세션 마무리 및 실행 계획</strong><br>"오늘 세 가지 입장을 체험해 보시면서 어떤 점을 새롭게 알아차렸을까요?" → "그럼 앞으로 이 관계에서 보다 나은 소통을 위해 무엇을 실천할 수 있을까요?" → "훌륭한 계획이네요! 앞으로의 변화가 기대됩니다." → "더 하시고 싶은 말씀이 있으실까요?" → "좋습니다. 그럼 오늘 코칭세션은 마무리해도 될까요?"</div></div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">풀스토리 세션 예시 — 팀장과의 갈등</div>
+      <p style="margin-bottom:16px;"><em>상황: 고객이 한 달을 준비한 발표 당일 팀장이 "방향이 바뀌었어"라고 통보. 팀원들 앞에서 쪽팔리고 팀장이 자신을 무시한다고 느끼는 상황.</em></p>
+
+      <div class="dialogue">
+        <div class="dialogue-title">🎭 세 가지 입장 풀스토리 — 1차 → 단절 → 2차 → 단절 → 3차 → 복귀</div>
+
+        <div class="d-line"><span class="d-role d-note">1차 위치</span><div class="d-text"><strong>주관적 몰입 — 나의 고통</strong></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"한 달을 준비했는데 당일에 방향이 바뀌었어요. 팀원들 앞에서 바보가 된 것 같아요. 저만 모르고 있었던 거잖아요. 가슴이 답답하고 숨이 막혀요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"답답하고, 쪽팔리고, 화는 있는데 어디로 가야 할지 모르는... 그 감각들이 다 지금 여기 있군요. 상대방에게 어떤 말을 해주고 싶으세요?"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">단절 →2차</span><div class="d-text"><strong>"잠깐, 여기 이 자리가 나의 자리였죠. 이 답답함, 억울함 — 여기 내려두고 갈게요. 어깨 내려볼게요. 숨 한번 깊게. (잠시) 이제 팀장님 자리로 가볼게요. 팀장님의 눈으로 그 날 아침을 보는 거예요."</strong></div></div>
+
+        <div class="d-line"><span class="d-role d-note">2차 위치</span><div class="d-text"><strong>공감적 몰입 — 상대방 내면</strong></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(천천히) "급하죠. 근데... 팀원한테 미안하다는 생각도 있을 것 같아요. 어떻게 말해야 할지 모르겠는 거겠죠."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"1차 위치에 있는 고객님에게 어떤 말을 하고 싶은가요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(낮게) "미안해. 오늘 아침에 갑자기 바뀌었어. 네가 열심히 준비했는데..."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">단절 →3차</span><div class="d-text"><strong>"자, 팀장님 자리에서도 나와볼게요. (한두 발 뒤로 물러나며) 팀장님도 내려두고. 숨 한번. 이제 저 앞에 두 사람을 보고 있어요. 코치님이 가장 신뢰하고 존경하는 분을 떠올려보세요. 그분의 눈으로 저 두 사람을 보는 거예요."</strong></div></div>
+
+        <div class="d-line"><span class="d-role d-note">3차 위치</span><div class="d-text"><strong>객관적 몰입 — 통찰</strong></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(잠시 보다가) "저 둘이... 서로를 오해하고 있었네요. 나는 팀장이 나를 무시한다고 생각했고, 팀장은 어떻게 말해야 할지 몰랐던 것 같고. 저기 있는 나한테 한마디 한다면... '물어봐. 억울하면 직접 물어봐. 혼자 상상하지 말고.'"</div></div>
+
+        <div class="d-line"><span class="d-role d-note">현재 복귀</span><div class="d-text">처음 자리로 돌아온다.</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"'물어봐. 혼자 상상하지 말고.' 지금 그 말 하면서 어떠세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"시원하면서도 좀 부끄럽기도 하고요. 제가 판단을 너무 먼저 해버렸던 것 같아요. 팀장한테 솔직하게 한번 물어봐야겠어요."</div></div>
+      </div>
+
+      <div class="highlight">
+        <p><strong>코치 포인트:</strong> 3차 위치에서 고객이 스스로 꺼낸 말 "물어봐. 혼자 상상하지 말고"가 강력한 이유 — 코치가 한 말이 아니라 고객이 자신에게 준 말이기 때문입니다. 세 입장을 거치면서 스스로 꺼낸 통찰이라 훨씬 깊이 각인됩니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">코치 핵심 체크리스트</div>
+      <ul class="checklist">
+        <li><span class="check-icon">◆</span><div><strong>단절 없이 전환하지 않기</strong> — 이전 입장의 감정을 그대로 들고 다음 입장으로 가면 관점 전환이 아니라 관점 투영이 됨</div></li>
+        <li><span class="check-icon">◆</span><div><strong>분석이 아니라 신체로 경험하게 하기</strong> — "팀장 입장에서 어떻게 생각했을까요?" (X) → "팀장님 목소리로 그 말을 해보세요" (O)</div></li>
+        <li><span class="check-icon">◆</span><div><strong>3차 위치에 존경하는 인물 소환하기</strong> — 추상적 관찰자가 아니라 실제 신뢰하는 사람의 관점을 빌리면 훨씬 깊은 통찰이 나옴</div></li>
+        <li><span class="check-icon">◆</span><div><strong>감정 점수 확인</strong> — 복귀 후 처음 점수와 비교. 충분히 낮아지지 않았다면 한 바퀴 더 돌기</div></li>
+        <li><span class="check-icon">◆</span><div><strong>미래 보조 맞추기(Future Pacing)</strong> — 세션에서 얻은 통찰이 실제 유사 상황에서 작동하는지 미리 시뮬레이션</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 17: 앵커링 심화 ══════════════ -->
+  <div class="chapter" id="ch17">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 17</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">앵커링 심화 (Anchoring)</h2>
+    <p class="chapter-desc">특정 자원 상태를 신체·청각·언어 자극과 연결하여 필요한 순간 즉시 꺼낼 수 있게 하는 기법입니다. 슈퍼바이저 실습 세션에서 정리된 VAK 앵커 프로토콜을 중심으로 구성했습니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">앵커링의 핵심 원리</div>
+      <div class="quote-box">
+        <p class="quote-text">"세션이 끌어올린 에너지를 일상으로 가져가는 무기를 장착시켜 주는 것"</p>
+        <p class="quote-sub">슈퍼바이저 표현 — 코칭은 세션 안에서만 작동해서는 안 된다</p>
+      </div>
+
+      <p>파블로프의 조건반사와 같은 원리입니다. 특정 감정·심리 상태가 최고조일 때 신체 자극(앵커)을 연결하면, 나중에 그 자극만으로도 상태가 자동 복원됩니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>앵커링 없을 때</th><th>앵커링 있을 때</th></tr>
+          <tr><td>"오늘 정말 좋았어요" → 다음날 일상에 치이면 그 감각은 흐릿해짐 → 세션의 에너지가 시간과 함께 증발</td><td>신체 자극(동작·색깔·단어) 하나로 상태 복원 → 어렵고 힘든 순간에도 세션에서 얻은 에너지를 꺼낼 수 있음</td></tr>
+        </table>
+      </div>
+
+      <div class="highlight">
+        <p><strong>타이밍이 전부입니다.</strong> 앵커는 에너지가 충만할 때(8~9점) 설치해야 강하게 연결됩니다. 고객의 눈이 반짝이고, 목소리 톤이 달라지고, 몸이 앞으로 기울어지는 바로 그 순간이 설치 타이밍입니다. 이것이 코치의 <strong>감각적 예민성</strong>입니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">VAK 채널별 앵커 — 표상체계와 연결</div>
+      <p>앵커의 재료가 고객의 주 표상체계(Ch.09 VAKD)와 다르면 앵커가 약해집니다. 고객이 자연스럽게 쓰는 언어 패턴을 먼저 읽고, 그 채널로 들어가서 앵커를 심어야 합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>유형</th><th>앵커 재료</th><th>설치 질문</th><th>발동 방법</th><th>신호 단어</th></tr>
+          <tr><td><strong>V — 시각형</strong></td><td>색깔, 이미지, 장면, 사물</td><td>"이 느낌이 색깔이라면 어떤 색인가요?" · "어떤 장면이 떠오르나요?"</td><td>그 색·이미지를 눈앞에 가져오기</td><td>"앞이 안 보여요", "그림이 그려져요", "밝다", "선명하다"</td></tr>
+          <tr><td><strong>A — 청각형</strong></td><td>소리, 음악, 목소리 톤, 리듬</td><td>"이 상태에 어울리는 소리나 음악이 있나요?" · "어떤 소리로 들리나요?"</td><td>그 소리·음악을 마음속으로 듣기</td><td>"울림이 있어요", "마음에 걸려요", "들린다", "소리가 맞다"</td></tr>
+          <tr><td><strong>D — 내적언어형</strong></td><td>단어, 문장, 선언문</td><td>"이 상태를 단어 하나로 담는다면?" · "한 문장으로 선언하면?"</td><td>그 단어·문장을 마음속으로 말하기</td><td>"논리적으로", "의미가 있다", "이해된다", "정리됐다"</td></tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 세 채널 동시 설치</div>
+        <p>색깔(V) → 소리/음악(A) → 단어(D) 순서로 세 채널을 모두 심으면, 고객의 주 표상체계가 무엇이든 하나는 강하게 작동합니다. 세 가지를 동시에 심는 것이 어느 유형에게도 작동하는 가장 안전하고 강력한 방법입니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">NLP 앵커링 30분 코칭 세션 프로토콜 (슈퍼바이저 실습 자료)</div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>단계</th><th>내용</th><th>핵심 질문</th></tr>
+          <tr><td><strong>(1) 세션 시작</strong></td><td>오늘 NLP 앵커링을 통해 달성하고 싶은 것 탐색</td><td>"오늘 세션에서 어떤 것을 가능하게 하고 싶으세요?"</td></tr>
+          <tr><td><strong>(2) 자원 상태 탐색</strong></td><td>강한 긍정 경험 또는 자신감 있었던 순간 찾기. 신체 감각으로 구체화</td><td>"그 순간을 느꼈을 때 몸에서는 어떻게 느껴지나요?" · "무엇이 보이고, 들리나요?" · "그 느낌을 세포 하나까지 채워보세요."</td></tr>
+          <tr><td><strong>(3) 앵커 설치</strong></td><td>감정이 8점에 이르면 앵커 설치 시작. 8→10점으로 올라가는 순간에 심는다</td><td>"이 느낌이 색깔이라면?" · "어울리는 소리·음악은?" · "이 상태를 단어 하나로 담는다면?"</td></tr>
+          <tr><td><strong>(4) 앵커 강화 및 테스트</strong></td><td>상태 단절 후 앵커를 발동하여 복원 확인</td><td>(단절 후) "그 색깔·소리·단어를 가져와보세요. 지금 몇 점인가요?"</td></tr>
+          <tr><td><strong>(5) 세션 마무리</strong></td><td>일상 활용 계획 + 축·배·다 마무리</td><td>"오늘 알아차린 것은?" · "이 앵커를 언제, 어떻게 활용해볼 계획인가요?"</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">앵커 설치 4단계 실습 흐름</div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">⚓ 앵커링 실전 대화 — 발표 자신감 앵커</div>
+
+        <div class="d-line"><span class="d-role d-note">자원 탐색</span><div class="d-text"><strong>강한 자원 상태 찾기</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"지금까지 살면서 가장 자신감이 넘쳤던 순간이 언제였나요? 아무리 작은 것도 괜찮아요."</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"작년에 발표를 완전히 망칠 것 같았는데, 끝나고 나서 다들 박수를 쳐줬을 때요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 박수 소리가 들릴 때, 몸 어디에서 그 느낌이 느껴지셨어요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"가슴 쪽이요. 막 뭔가 꽉 차는 느낌이었어요."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">앵커 설치</span><div class="d-text"><strong>8점 확인 후 VAK 설치</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 느낌을 지금 다시 느껴보세요. 얼마나 선명하게 느껴지세요? 1~10점으로 말해주시겠어요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"한 8점 정도요. 꽤 생생해요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"좋아요. 이 느낌이 색깔이라면 어떤 색인가요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"노란색이요. 밝은 노란색."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 노란색을 눈앞에 선명하게 가져와보세요. 이제 이 상태에 어울리는 소리나 노래가 있나요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"좋아하는 노래가 있어요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 노래를 마음속으로 들어보세요. (잠시) 마지막으로, 이 상태를 단어 하나로 담는다면?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"'충만'이요."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">단절 + 테스트</span><div class="d-text"><strong>상태 리셋 후 발동 확인</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"잠깐, 오늘 점심에 뭘 드셨어요?" (상태 단절)</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"아, 비빔밥이요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"좋아요. 이제 그 노란색을 가져오고, 그 노래를 흥얼거리고, '충만'을 마음속으로 말해보세요."</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(잠시 후, 놀란 표정으로) "오… 아까 그 느낌이 다시 올라오네요?"</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"발표 전에 긴장될 때 이 세 가지를 쓰세요. 이게 지금 코치님의 무기예요."</div></div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">마무리 시점에 앵커링하는 이유</div>
+      <p>세션 중 고객은 평소에는 접근하기 어려운 깊은 자원 상태에 도달합니다. 통찰이 일어난 그 순간, 몸과 감정이 함께 열려 있고 에너지가 가장 선명합니다. 앵커링은 바로 그 정점의 상태를 신체 자극과 연결하여 언제든 꺼낼 수 있는 형태로 저장하는 작업입니다.</p>
+      <ul class="checklist">
+        <li><span class="check-icon">◆</span><div><strong>저장</strong> — 세션의 통찰과 에너지를 신체·감각에 보관한다</div></li>
+        <li><span class="check-icon">◆</span><div><strong>즉시 발동</strong> — 언제든 자극 하나로 그 상태를 꺼낸다</div></li>
+        <li><span class="check-icon">◆</span><div><strong>코치 없이도</strong> — 세션 밖 현실에서 고객 혼자 쓸 수 있다</div></li>
+        <li><span class="check-icon">◆</span><div><strong>반복할수록 강해진다</strong> — 하루 3번 연습 과제로 앵커를 강화할 것을 권장</div></li>
+      </ul>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 타임라인 × 앵커링 연결</div>
+        <p>타임라인 워크(Ch.07)의 확장 버전으로 활용 가능합니다. 미래 시점에 도달해 에너지가 정점(8점)에 달했을 때 VAK 앵커를 설치하고, 현재로 복귀한 뒤 발동 확인합니다. 미래에서 얻은 에너지를 현재 일상으로 가져오는 가장 강력한 방법입니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CHAPTER 18: 신경 논리 레벨 ══════════════ -->
+  <div class="chapter" id="ch18">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">Chapter 18</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">신경 논리 레벨 (Neuro-Logical Level)</h2>
+    <p class="chapter-desc">로버트 딜츠가 개발한 6단계 변화 모델. 이 챕터는 신경 논리 레벨을 바라보는 <strong>두 가지 다른 관점</strong>을 함께 담고 있습니다. 두 관점은 틀린 것이 아니라, 적용 목적과 출발점이 다릅니다. 먼저 두 관점의 차이를 파악한 뒤 각 섹션을 읽으면 혼동 없이 학습할 수 있습니다.</p>
+
+    <div class="section reveal">
+      <div class="section-title">★ 먼저 읽기 — 두 관점의 차이 (학습 혼동 방지)</div>
+
+      <div class="quote-box">
+        <p class="quote-text">"두 관점은 같은 지도를 다른 방향에서 출발하는 여정입니다."</p>
+        <p class="quote-sub">어느 쪽이 옳고 그름이 아니라, 언제 어떤 관점으로 접근하느냐의 문제입니다.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th></th><th>관점 A — 진단·탐색 접근</th><th>관점 B — 정렬·소명 접근 (슈퍼바이저)</th></tr>
+          <tr><td><strong>출발점</strong></td><td>현재의 고통·막힌 문제<br><em>"열심히 하는데 왜 안 되죠?"</em></td><td>되고자 하는 존재·소명<br><em>"어떤 존재가 되고 싶으세요?"</em></td></tr>
+          <tr><td><strong>방향</strong></td><td>아래 → 위<br>환경에서 시작해 막힌 레벨을 찾아 올라감</td><td>위 → 아래<br>소명에서 출발해 각 레벨로 에너지를 내려보냄</td></tr>
+          <tr><td><strong>무엇을 하는가</strong></td><td>어느 레벨이 막혀 있는지 진단<br>정체성·가치 어긋남을 발견</td><td>6단계 전체를 하나로 정렬<br>소명의 에너지가 행동·환경까지 흐르게 함</td></tr>
+          <tr><td><strong>앵커 역할</strong></td><td>세션 통찰·에너지를 일상에서 꺼낼 수 있게 저장</td><td>소명 단계의 최고 에너지(9점↑)를 각 레벨 연결의 다리로 활용</td></tr>
+          <tr><td><strong>신체 활용</strong></td><td>대화 중심 — 신체 신호 관찰 보조</td><td>물리적 공간 이동 중심 — 바닥 종이 위에 실제로 서서 체험</td></tr>
+          <tr><td><strong>적합한 상황</strong></td><td>고객이 문제를 호소하며 왔을 때<br>어느 레벨이 막혔는지 빠르게 파악해야 할 때</td><td>고객이 변화 의지가 있고 깊은 정렬을 원할 때<br>리더십·정체성·소명을 통합적으로 다룰 때</td></tr>
+          <tr><td><strong>비유</strong></td><td>건물 점검 — 어느 층에 균열이 있는지 찾기</td><td>건물 신축 — 소명이라는 꼭대기에서 기초까지 하나로 세우기</td></tr>
+        </table>
+      </div>
+
+      <div class="highlight">
+        <p><strong>핵심 관계:</strong> 관점 A(진단)는 관점 B(정렬 실습)의 <strong>사전 단계</strong>로 활용할 수 있습니다. 고객이 어느 레벨에서 막혀 있는지 파악한 뒤, 그것을 해결하는 방법으로 관점 B의 정렬 실습을 진행하는 것이 가장 완성된 흐름입니다.<br><br>
+        단, 슈퍼바이저의 실습 시트는 관점 B를 독립적으로도 운용할 수 있도록 설계되어 있습니다 — 문제 진단 없이도 "되고자 하는 존재"라는 하나의 키워드만으로 전체 정렬을 이끌어냅니다.</p>
+      </div>
+
+      <div class="warning-box">
+        <p><strong>⚠️ 혼동 포인트 — 방향이 반대입니다:</strong><br>
+        관점 A의 코칭 현장 재현(박 과장 예시)은 환경에서 시작해 정체성을 <strong>올라가며 발견</strong>합니다.<br>
+        관점 B의 실습 프로토콜은 소명에서 시작해 환경까지 <strong>내려가며 정렬</strong>합니다.<br>
+        같은 6단계 구조인데 방향이 반대이기 때문에, 두 섹션을 연달아 읽으면 혼란스러울 수 있습니다. <strong>이 표를 기준으로 어느 관점의 내용인지 항상 확인하세요.</strong></p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">6단계 레벨 구조</div>
+      <p>아래로 갈수록 표면적이고, 위로 갈수록 깊고 근본적입니다. 상위 레벨이 하위 레벨을 지배합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>레벨</th><th>핵심 질문</th><th>의미</th><th>코칭 진입 질문</th></tr>
+          <tr><td><strong>영성·소명 (Mission)</strong><br><em>무엇을 위해?</em></td><td>나의 존재가 세상에 기여하는 것</td><td>Why beyond why — 나를 넘어선 목적</td><td>"어떤 사람들에게 무엇을 봉사하고 싶으세요?" · "당신의 존재가 세상에 어떤 의미인가요?"</td></tr>
+          <tr><td><strong>정체성 (Who)</strong><br><em>나는 누구인가?</em></td><td>나는 어떤 사람이다</td><td>자아상 — 스스로를 어떻게 정의하는가</td><td>"당신은 어떤 사람인가요?" · "그런 가치를 중요하게 여기는 사람은 어떤 사람인가요?"</td></tr>
+          <tr><td><strong>가치 (Why)</strong><br><em>왜 중요한가?</em></td><td>내가 소중히 여기는 것</td><td>동기와 방향의 원천</td><td>"그게 왜 중요한가요?" · "무엇을 위해 그걸 하고 있나요?"</td></tr>
+          <tr><td><strong>재능·역량 (How)</strong><br><em>어떻게 할 수 있나?</em></td><td>내가 가진 능력과 방법</td><td>강점과 기술</td><td>"어떤 능력과 재능이 발휘되나요?" · "잘 할 수 있는 것은 무엇인가요?"</td></tr>
+          <tr><td><strong>행동 (What)</strong><br><em>무엇을 하는가?</em></td><td>실제 행동과 습관</td><td>구체적으로 하는 것</td><td>"구체적으로 무엇을 하고 있나요?" · "어떤 행동을 취하고 있나요?"</td></tr>
+          <tr><td><strong>환경 (Where/When)</strong><br><em>어디서 언제?</em></td><td>상황, 조건, 주변</td><td>외적 맥락</td><td>"어디서 언제 그 상황이 벌어지나요?" · "주변 환경은 어떤가요?"</td></tr>
+        </table>
+      </div>
+
+      <div class="highlight">
+        <p><strong>[관점 A + B 공통 원리] 정렬의 원리:</strong> 정체성이 가치·재능·행동과 어긋나면 아무리 행동을 바꿔도 에너지가 새어나갑니다. 정체성이 정렬되면 위에서 아래로 에너지가 흘러 영향력(Power)이 커집니다.<br><br>
+        <strong>관점 A</strong>에서는 고객의 말 속에서 어느 레벨이 어긋났는지 <strong>진단</strong>하는 것이 핵심입니다.<br>
+        <strong>관점 B</strong>에서는 소명에서 출발해 모든 레벨을 하나로 <strong>정렬</strong>하는 것이 핵심입니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">[관점 A] 레벨 진단 — 어디서 막혀 있는가</div>
+      <p>고객이 문제를 들고 왔을 때 활용하는 접근입니다. 고객의 말을 들을 때 "지금 이분은 어느 레벨에서 이야기하고 있는가?"를 감지하는 것이 핵심 역량입니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>고객의 말</th><th>막힌 레벨</th><th>코치의 접근</th></tr>
+          <tr><td>"환경이 안 맞아요. 팀 분위기가 너무 안 좋아요."</td><td>환경</td><td>환경만 바꾸면 해결 가능 — 단, 다른 레벨 문제일 수 있으므로 확인 필요</td></tr>
+          <tr><td>"열심히 하는데 뭔가 제자리예요. 뭘 해야 할지 모르겠어요."</td><td>행동 또는 재능</td><td>더 많이 하는 것이 아니라, 어떤 재능이 발휘되지 않고 있는지 탐색</td></tr>
+          <tr><td>"잘 할 수 있는 것 같긴 한데, 왜 하는지 모르겠어요."</td><td>가치</td><td>가치를 명확히 하는 것이 우선. "무엇을 위해?" 질문으로 진입</td></tr>
+          <tr><td>"열심히 하는데 공허해요. 뭔가 나답지 않은 것 같아요."</td><td>정체성 ← 가장 많은 경우</td><td>정체성 탐색. 현재 자아상이 진짜 가치와 어긋나 있는지 확인</td></tr>
+          <tr><td>"내가 뭘 위해 사는 건지 모르겠어요."</td><td>소명·영성</td><td>가장 깊은 레벨. 존재의 의미와 기여를 탐색</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">[관점 A] 코칭 현장 재현 — "열심히 하는데 왜 달라지지 않죠?"</div>
+      <p>문제를 가지고 온 고객의 말에서 레벨을 읽고 정체성 어긋남을 발견하는 대화 흐름입니다. <strong>환경에서 시작해 정체성으로 올라가는 방향</strong>입니다.</p>
+      <p style="margin-bottom:16px;"><em>상황: 40대 직장인 박 과장. "열심히 하는데 왜 달라지지 않는지 모르겠어요."</em></p>
+
+      <div class="dialogue">
+        <div class="dialogue-title">🏔 신경 논리 레벨 — 레벨별 진단 대화</div>
+
+        <div class="d-line"><span class="d-role d-note">환경 레벨</span><div class="d-text">→ 문제가 환경에 있는지 확인</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"요즘 주로 어디서 어떻게 일하세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"회사에서 하루 10시간씩 일해요. 야근도 자주 하고요."</div></div>
+        <div class="d-line"><span class="d-role d-note">→ 분석</span><div class="d-text">환경은 충분히 갖춰져 있음. 이 레벨 문제가 아님.</div></div>
+
+        <div class="d-line"><span class="d-role d-note">행동 레벨</span><div class="d-text">→ 무엇을 하고 있는지 확인</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"구체적으로 어떤 일들을 하고 계세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"보고서 쓰고, 회의 참석하고, 팀원 관리하고... 근데 다 남이 시키는 거예요. 제가 시작한 게 없어요."</div></div>
+        <div class="d-line"><span class="d-role d-note">→ 분석</span><div class="d-text">행동은 많은데 주도적 행동이 없음. 한 레벨 위로.</div></div>
+
+        <div class="d-line"><span class="d-role d-note">재능 레벨</span><div class="d-text">→ 발휘되는 능력 탐색</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"가장 잘한다고 느끼는 순간이 언제예요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"사람들 이야기 들어주고 정리해주는 거요. 복잡한 문제를 풀어주는 게 좋아요."</div></div>
+        <div class="d-line"><span class="d-role d-note">→ 분석</span><div class="d-text">재능은 있음. 근데 쓰고 있지 않음. 더 올라가자.</div></div>
+
+        <div class="d-line"><span class="d-role d-note">가치 레벨</span><div class="d-text">→ 왜 중요한지 탐색</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 능력이 왜 중요하다고 느껴지세요? 뭐가 좋아서 그걸 하고 싶은 거예요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"사람들이 막혀 있던 게 풀렸을 때 얼굴이 달라지는 게 좋아요. 그게 보람이에요."</div></div>
+        <div class="d-line"><span class="d-role d-note">→ 분석</span><div class="d-text">가치 발견 — "나는 사람들이 막힌 걸 뚫어주는 게 의미 있다."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">정체성 레벨 ★</span><div class="d-text">→ 핵심 — 자아상과 가치의 일치 여부</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"지금까지 말씀하신 걸 들어보면... 박 과장님은 어떤 사람인 것 같으세요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(잠시 침묵) "...그냥 시키는 일 하는 사람?"</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그게 스스로를 보는 모습이군요. 근데 방금 말씀하신 것들 — 사람들 막힌 걸 풀어주고, 얼굴이 달라지는 게 보람인 사람 — 그건 어떤 사람이에요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">(천천히) "...퍼실리테이터? 아니면... 코치 같은 사람?"</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"그 사람이 지금 '시키는 일만 하는 사람'으로 살고 있는 거네요."</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text"><em>(눈이 촉촉해지며)</em> "...맞아요. 그래서 공허했던 것 같아요."</div></div>
+      </div>
+
+      <div class="highlight">
+        <p><strong>이것이 정렬의 문제입니다.</strong> 정체성(나는 시키는 일 하는 사람)이 실제 가치(사람을 연결하고 풀어주는 것이 보람)와 어긋나 있었습니다. 행동을 아무리 바꿔도 에너지가 새어나가는 이유가 바로 이 어긋남입니다. 정체성이 정렬되는 순간 — 위에서 아래로 에너지가 흐르기 시작합니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">[관점 B] 신경논리단계 정렬 실습 프로토콜 (슈퍼바이저 자료)</div>
+      <p>문제 진단이 아니라 <strong>"되고자 하는 존재"에서 출발해 소명→환경으로 내려오는 정렬 실습</strong>입니다. 바닥에 6장의 종이를 놓고 고객이 실제로 서서 체험합니다.</p>
+
+      <div class="flow">
+        <div class="flow-step">① 세션 시작<br><small>존재 키워드·감정·점수</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">② 환경 단계<br><small>뒷걸음으로</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">③ 행동 단계<br><small>뒷걸음으로</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">④ 재능 단계<br><small>뒷걸음으로</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">⑤ 가치 단계<br><small>뒷걸음으로</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">⑥ 정체성 단계<br><small>뒷걸음으로</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:var(--accent);color:#fff;">⑦ 영성·소명<br><small>VAK 앵커 설치</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:var(--green);color:#fff;">⑧ 역방향 복귀<br><small>앵커 발동하며</small></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>단계</th><th>방향</th><th>핵심 질문</th><th>포인트</th></tr>
+          <tr><td><strong>세션 시작</strong></td><td>—</td><td>"어떤 존재가 되고 싶으세요?" · "되었다면 어떤 기분?" · "현재 점수는? 코칭 후 몇 점이면 만족?" </td><td>존재 키워드·감정·점수 사전 설정</td></tr>
+          <tr><td><strong>① 환경</strong></td><td>앞으로</td><td>"내가 되고자 하는 존재로서 있는 시점은 언제? 구체적으로 어떤 장소?" · "그 감정을 온몸으로 가득 느껴보세요."</td><td>소명 단계가 머리 뒤에 위치하게 서도록 안내</td></tr>
+          <tr><td><strong>② 행동</strong></td><td>뒷걸음</td><td>"그 시간과 장소에서 ___로서 구체적으로 무엇을 하고 있나요?" · "동영상 보듯이 보면서 말해보세요."</td><td>매 단계 완료 후 감정을 _점 이상으로 느끼게 안내</td></tr>
+          <tr><td><strong>③ 재능·역량</strong></td><td>뒷걸음</td><td>"그런 행동을 할 때 주로 발휘되는 것은?" · "어떤 재능·강점이 발휘되나요?"</td><td>—</td></tr>
+          <tr><td><strong>④ 가치</strong></td><td>뒷걸음</td><td>"무엇을 위해 재능·강점을 발휘하나요?" · "그렇게 하는 것의 중요한 가치는?"</td><td>—</td></tr>
+          <tr><td><strong>⑤ 정체성</strong></td><td>뒷걸음</td><td>"그런 가치를 중요하게 여기는 사람이라면 나는 어떤 사람인가요?"</td><td>—</td></tr>
+          <tr><td><strong>⑥ 영성·소명</strong></td><td>뒷걸음</td><td>"___한 사람은 주로 어떤 사람에게 무엇을 봉사하나요?" · "이루고자 하는 것이 성취됐을 때 어디서 무엇을?" · <strong>감정 9점 이상 확인 후 VAK 앵커 설치</strong></td><td>색깔·소리·단어로 앵커 설치 → 파노라마 180도 경험</td></tr>
+          <tr><td><strong>⑦ 역방향 복귀</strong><br>(정체성→가치→재능→행동→환경)</td><td>뒷걸음</td><td>각 단계를 앵커 발동하며 뒷걸음으로 내려옴. "___한 분이 뒷걸음으로 융단을 밟고서 ___ 단계로 가볼까요?"</td><td>앵커 발동하며 각 레벨을 연결 — 위의 에너지가 아래로 흐르는 경험</td></tr>
+          <tr><td><strong>마무리</strong></td><td>—</td><td>"지금 ___ 감정은 10점 척도로 몇 점인가요?"</td><td>사전 점수와 비교. 충분치 않으면 특정 단계 반복</td></tr>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 역방향 복귀 시 핵심 언어 패턴</div>
+        <p>역방향으로 내려올 때는 위에서 발견한 것들을 누적하여 언어에 담습니다.<br><br>
+        <strong>정체성 → 가치:</strong> "___한 분이 뒷걸음으로 가치 단계로 가볼까요? ___한 분은 무엇을 중요하게 생각하시나요?"<br>
+        <strong>가치 → 재능:</strong> "___한 분이 ___중요함을 가지고 강점 단계로 가볼까요?"<br>
+        <strong>재능 → 행동:</strong> "___한 분이 ___중요함과 ___강점을 발휘하면서 무엇을 할 것인가요?"<br>
+        <strong>행동 → 환경:</strong> "___한 분이 ___중요함과 ___강점을 행동으로 발휘하는 장소는 어디이며 어떤 모습인가요?"<br><br>
+        이 언어 패턴이 정체성에서 환경까지 하나로 연결되는 <strong>'정렬의 선언'</strong>이 됩니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">[관점 B] 리더십 모델링 사례 — 정렬이 완성된 상태의 예시</div>
+      <p>슈퍼바이저 실습 자료의 실제 사례입니다. 관점 B 실습의 <strong>결과물</strong> — 6단계가 하나로 정렬된 상태를 보여줍니다. 실습 전 고객에게 "이런 모습이 될 수 있다"는 방향으로 제시하거나, 존경하는 인물의 모델을 먼저 작성한 뒤 자신의 모델을 구성하는 데 활용합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>레벨</th><th>사례 A — 코치 김만수 MCC</th><th>사례 B — 00팀장 리더십</th></tr>
+          <tr><td><strong>소명 (Mission)</strong></td><td>인류의 의식혁명에 기여한다</td><td>주변 사람들이 행복하고 풍요롭게 살도록 돕는다</td></tr>
+          <tr><td><strong>정체성 (Who)</strong></td><td>사랑의 존재</td><td>균형감각과 지혜를 갖춘 덕이 있는 리더</td></tr>
+          <tr><td><strong>가치 (Why)</strong></td><td>깨달음 · 배려심 · 무경계</td><td>비전 · 조화 · 관계</td></tr>
+          <tr><td><strong>재능 (How)</strong></td><td>유연성 · 시스템적 사고 · 통찰력</td><td>비저닝 · 통찰력 · 신뢰감</td></tr>
+          <tr><td><strong>행동 (What)</strong></td><td>페이싱·연결 · 경청·질문·피드백 · 그룹·개별 코칭</td><td>화두·토론·질문 · 공감적 경청 · 칭찬</td></tr>
+          <tr><td><strong>환경 (Where)</strong></td><td>개인빌딩·코칭룸 · 한국·아시아·유럽 지부</td><td>창의적 조직 · 오픈된 사무실 · 화목한 가정</td></tr>
+        </table>
+      </div>
+
+      <div class="highlight">
+        <p><strong>모델링의 힘:</strong> 내가 되고자 하는 존재의 모델(롤모델)을 이 6단계로 분석하면, 어느 레벨에서 무엇을 배울지가 명확해집니다. 리더십 모델링 실습에서는 고객이 존경하는 인물의 6단계를 먼저 작성한 뒤, 자신의 6단계를 구성합니다.</p>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">코치 핵심 체크리스트</div>
+      <ul class="checklist">
+        <li><span class="check-icon">◆</span><div><strong>레벨 진단 먼저</strong> — 고객의 말이 어느 레벨인지 파악하지 않고 개입하면 효과가 반감됨. "지금 이분은 환경 이야기를 하는가, 정체성 이야기를 하는가?"를 먼저 읽는다</div></li>
+        <li><span class="check-icon">◆</span><div><strong>상위 레벨에서 개입</strong> — 환경 문제처럼 보여도 정체성 레벨에서 막혀 있는 경우가 많다. 행동을 바꾸려 하기 전에 정체성과 가치를 먼저 탐색한다</div></li>
+        <li><span class="check-icon">◆</span><div><strong>실습 시 감정 점수 매 단계 확인</strong> — 각 단계에서 목표 감정이 충분히 느껴지지 않으면 그 단계에서 더 머문다. 9점 이상이 되어야 영성·소명 단계에서 앵커를 설치한다</div></li>
+        <li><span class="check-icon">◆</span><div><strong>역방향 복귀 시 누적 언어</strong> — 위에서 발견한 정체성·가치·재능을 언어에 담아 내려오는 것이 정렬의 핵심. 단순히 내려오는 것이 아니라 위의 자원을 가지고 내려오는 것</div></li>
+        <li><span class="check-icon">◆</span><div><strong>앵커링과 연결</strong> — 소명 단계에서 9점 이상 확인 후 색깔·소리·단어로 VAK 앵커 설치 (Ch.17 참조). 역방향 복귀 시 이 앵커를 발동하여 위의 에너지를 각 레벨로 가져온다</div></li>
+      </ul>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-title">밀턴 모델 × 메타 모델 통합 활용 — 두 관점 모두에 적용</div>
+
+      <div class="quote-box">
+        <p class="quote-text">"메타 모델은 안개를 걷어내는 도구이고, 밀턴 모델은 안개 너머로 걸어가게 하는 도구입니다."</p>
+        <p class="quote-sub">관점 A에서는 탐색 구간 전체에서 메타 모델이 주로 쓰입니다. 관점 B에서는 탐색 구간(아래→위)에 메타, 정렬 구간(위→아래)에 밀턴이 쓰입니다.</p>
+      </div>
+
+      <p>신경 논리 레벨 실습은 <strong>탐색(아래→위, 환경→소명)</strong>과 <strong>정렬(위→아래, 소명→환경)</strong> 두 방향이 있습니다. 탐색 구간에서는 막연한 언어를 파고드는 <strong>메타 모델</strong>이, 정렬 구간에서는 내면이 스스로 연결되도록 공간을 여는 <strong>밀턴 모델</strong>이 필요합니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>구간</th><th>화법</th><th>이유</th><th>예시</th></tr>
+          <tr>
+            <td><strong>환경 → 행동</strong><br>탐색 초반</td>
+            <td>메타 모델</td>
+            <td>막연한 행동 언어를 구체적 장면으로 파고들기</td>
+            <td>"열심히 일하고 있어요" → "어떻게 열심히요? 누구와 무엇을 하는 장면인가요?" (삭제 복원)</td>
+          </tr>
+          <tr>
+            <td><strong>재능 → 가치</strong><br>의미 파기</td>
+            <td>메타 모델</td>
+            <td>명사화된 단어의 껍질을 벗겨 가치와 연결</td>
+            <td>"제 강점은 소통이에요" → "소통을 어떻게 하시나요? 그 소통이 왜 중요한가요?" (명사화 해체)</td>
+          </tr>
+          <tr>
+            <td><strong>가치 → 정체성</strong><br>자아상 열기</td>
+            <td>밀턴 모델</td>
+            <td>정해진 답을 요구하지 않고 내면이 스스로 채우도록</td>
+            <td>"그런 가치를 중요하게 여기는 사람이라면... 그분은 어떤 존재일까요?" (비구체적 동사 + 공간 열기)</td>
+          </tr>
+          <tr>
+            <td><strong>소명·영성 단계</strong><br>핵심 정점</td>
+            <td>밀턴 모델 전용</td>
+            <td>분석 모드로 끌어내리지 않고 체험 속에 머물게</td>
+            <td>❌ "그래서 소명이 정확히 뭔가요?" (메타 — 체험 끊김)<br>✅ "이미 성취되었습니다... 주변을 돌아보시면 무엇이 느껴지시나요?" (밀턴 — 체험 유지)</td>
+          </tr>
+          <tr>
+            <td><strong>역방향 복귀</strong><br>정렬 내려오기</td>
+            <td>밀턴 모델<br>(전제 + 인과관계)</td>
+            <td>누적 언어 자체가 전제·인과관계 패턴 — 고객이 논리 아닌 몸으로 받아들임</td>
+            <td>"___한 분이, ___을 소중히 여기시고, ___한 강점을 가지고 뒷걸음으로 행동 단계로 가볼까요..." (전제 + 인과 누적)</td>
+          </tr>
+          <tr>
+            <td><strong>앵커 발동 순간</strong><br>마무리</td>
+            <td>밀턴 모델<br>(이중구속)</td>
+            <td>저항 없이 자연스럽게 앵커와 연결</td>
+            <td>"지금 바로 그 색깔이 느껴질 수도 있고, 뒷걸음을 밟으면서 느껴질 수도 있어요." (이중구속 — 어느 쪽이든 느낀다)</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">🎭 화법 전환 실전 예시 — 재능 → 가치 → 정체성 구간</div>
+
+        <div class="d-line"><span class="d-role d-note">재능 단계</span><div class="d-text"><strong>메타 모델 — 명사화 해체</strong></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"제 강점은 소통이에요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"소통을 구체적으로 어떻게 하시나요? 그 소통을 잘 했을 때 어떤 일이 일어나던가요?" <em>(메타 — 명사화 해체, 구체화)</em></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"사람들이 서로 이해 못 하던 걸 제가 다리를 놓아주면 팀이 하나가 되는 느낌이요."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">가치 단계 진입</span><div class="d-text"><strong>메타 → 밀턴 전환점</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"팀이 하나가 될 때... 그게 왜 중요한가요?" <em>(메타 — 가치 탐색)</em></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"사람들이 혼자가 아니라는 걸 느끼게 해주고 싶어요."</div></div>
+
+        <div class="d-line"><span class="d-role d-note">정체성 단계 진입</span><div class="d-text"><strong>밀턴 모델 — 공간 열기</strong></div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"사람들이 혼자가 아니라는 걸 느끼게 해주고 싶은 분이라면... 그분은 어떤 존재일까요?" <em>(밀턴 — 비구체적 동사, 내면이 스스로 채우도록)</em></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text"><em>(긴 침묵 후)</em> "...연결하는 사람. 저는 연결자인 것 같아요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text"><em>(조용히)</em> "연결자... 지금 그 말이 몸에서 어떻게 느껴지세요?" <em>(밀턴 — 체험 유지, 신체 각인)</em></div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text"><em>(깊이 숨 쉬며)</em> "뭔가 가슴 가득 차는 느낌이에요. 이게 저였구나 하는..."</div></div>
+      </div>
+
+      <div class="warning-box">
+        <p><strong>⚠️ 가장 흔한 실수 — 소명 단계에서 메타 모델 사용:</strong><br>
+        고객이 소명 단계에서 깊은 경험을 하고 있을 때 "그래서 소명이 정확히 어떻게 되시나요?"처럼 구체화 질문을 던지면 — 고객이 순식간에 분석 모드로 올라옵니다. 체험이 끊기고 감정 점수가 뚝 떨어집니다. 소명·영성 단계에서는 밀턴 모델만 씁니다.</p>
+      </div>
+
+      <div class="success-box">
+        <p><strong>✅ 전환의 신호를 포착하라:</strong><br>
+        메타 → 밀턴으로 전환하는 타이밍은 고객의 신체 신호입니다. 말이 느려지고, 눈이 멀어지고, 호흡이 깊어지면 — 그 순간이 밀턴으로 전환할 때입니다. 그때 구체화 질문을 던지는 것은 고객을 표면으로 끌어올리는 실수입니다.</p>
+      </div>
+
+      <div class="highlight">
+        <p><strong>통합 공식:</strong><br>
+        탐색 구간(환경→소명) = <strong>메타 모델로 안개 걷어내기</strong> → 감정이 올라오기 시작하면 <strong>전환</strong> → 정렬 구간(소명→환경) = <strong>밀턴 모델로 위의 에너지를 아래로</strong><br><br>
+        두 화법을 자유자재로 쓰는 코치가 될 때, 고객의 6단계 레벨이 분석이 아닌 <strong>온몸의 경험</strong>으로 정렬됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ 부록: 축·배·다 마무리 ══════════════ -->
+  <div class="chapter" id="ch11">
+    <div class="chapter-eyebrow">
+      <span class="chapter-num">부 록</span>
+      <div class="chapter-line"></div>
+    </div>
+    <h2 class="chapter-title">축·배·다 마무리 기법</h2>
+    <p class="chapter-desc">코칭 세션을 의미 있게 마무리하고 변화를 삶으로 연결하는 3단계 피드백 기법입니다.</p>
+
+    <div class="section reveal">
+      <div class="chukbae">
+        <div class="chukbae-card">
+          <div class="chukbae-hanja">축</div>
+          <div class="chukbae-name">축하할 것</div>
+          <div class="chukbae-desc">오늘 이 자리에 온 것, 용기 있게 말한 것, 작은 변화를 인식한 것 — 고객의 존재와 노력을 인정해줍니다.</div>
+        </div>
+        <div class="chukbae-card">
+          <div class="chukbae-hanja">배</div>
+          <div class="chukbae-name">배운 것</div>
+          <div class="chukbae-desc">세션에서 알아차린 것, 새롭게 발견한 것을 언어로 고정합니다. 알아차림을 명확하게 각인시킵니다.</div>
+        </div>
+        <div class="chukbae-card">
+          <div class="chukbae-hanja">다</div>
+          <div class="chukbae-name">다짐할 것</div>
+          <div class="chukbae-desc">한 주간 실천할 것, 해볼 것. 코칭을 실제 삶으로 연결하는 다리 역할을 합니다.</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">💡 활용 포인트</div>
+        <p>세션이 끝날 때 고객이 경험한 것들이 흩어지지 않고 정리되고 각인되는 구조입니다. 세 가지가 합쳐지면 고객은 "좋은 대화였어"로 끝내는 게 아니라 <strong>"내가 변화하고 있다"는 감각</strong>을 가지고 나가게 됩니다.</p>
+      </div>
+
+      <div class="dialogue">
+        <div class="dialogue-title">🎯 축·배·다 실전 예시</div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"오늘 세션을 마무리하면서, 먼저 오늘 자신에게 축하해줄 것이 있다면 무엇인가요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"처음으로 제가 지쳐있다는 걸 인정한 것 같아요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"정말 용기 있는 일이에요. 오늘 배운 것이나 새롭게 알아차린 것은 무엇인가요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"제가 원하는 게 뭔지 알면서도 모른 척하고 있었다는 걸 알았어요."</div></div>
+        <div class="d-line"><span class="d-role d-coach">코치</span><div class="d-text">"한 주 동안 한 가지만 해본다면, 어떤 것을 해보시겠어요?"</div></div>
+        <div class="d-line"><span class="d-role d-client">고객</span><div class="d-text">"매일 5분만이라도 진짜 하고 싶은 것에 대해 써보겠어요."</div></div>
+      </div>
+    </div>
+  </div>
+
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// ─── SIDEBAR TOGGLE ───
+function toggleSidebar() {
+  const open = document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('visible', open);
+  document.getElementById('menu-toggle').classList.toggle('hide-toggle', open);
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+  document.getElementById('menu-toggle').classList.remove('hide-toggle');
+}
+
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  closeSidebar();
+}
+
+function goToChapter(id) {
+  goTo(id);
+}
+
+// ─── PROGRESS BAR & BACK TO TOP ───
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  const scroll = window.scrollY;
+  const total = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('progress').style.width = (scroll / total * 100) + '%';
+  backToTop.classList.toggle('show', scroll > 400);
+});
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── ACTIVE NAV ───
+const chapters = document.querySelectorAll('.chapter');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  chapters.forEach(ch => {
+    if (window.scrollY >= ch.offsetTop - 100) current = ch.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('onclick')?.includes(current)) item.classList.add('active');
+  });
+});
+
+// ─── SURVEY DATA ───
+const questions = [
+  { q: "새로운 것을 배울 때 나는...",
+    v: "그림, 도표, 영상을 보면서 배우는 게 가장 잘 된다",
+    a: "설명을 듣거나 누군가와 대화하면서 배우는 게 잘 된다",
+    k: "직접 해보면서 몸으로 익히는 게 가장 잘 된다",
+    d: "먼저 왜 배워야 하는지 의미와 논리를 이해해야 배워진다" },
+  { q: "오랜만에 만난 사람을 기억할 때 나는...",
+    v: "얼굴이 먼저 떠오른다",
+    a: "목소리나 이름이 먼저 떠오른다",
+    k: "그 사람과 함께했던 느낌이나 분위기가 먼저 떠오른다",
+    d: "그 사람과 나눴던 대화 내용이나 공통점이 먼저 떠오른다" },
+  { q: "길을 안내할 때 나는...",
+    v: "지도를 그려주거나 시각적으로 설명한다",
+    a: "말로 순서대로 설명한다",
+    k: "직접 데려다주거나 느낌으로 안내한다",
+    d: "정확한 거리와 방향을 단계별로 논리적으로 설명한다" },
+  { q: "화가 나거나 감정이 올라올 때 나는...",
+    v: "머릿속에 그 장면이 계속 보인다",
+    a: "그 사람이 한 말이 계속 귀에 맴돈다",
+    k: "가슴이 답답하거나 몸 어딘가가 불편해진다",
+    d: "왜 그런 일이 일어났는지 이유를 분석하게 된다" },
+  { q: "책을 읽을 때 나는...",
+    v: "장면이 이미지로 그려지면서 읽힌다",
+    a: "속으로 소리 내어 읽거나 목소리가 들리는 것 같다",
+    k: "주인공의 감정이 내 몸에서 느껴진다",
+    d: "핵심 논지와 구조를 파악하면서 분석적으로 읽는다" },
+  { q: "중요한 결정을 내릴 때 나는...",
+    v: "머릿속으로 그림을 그려보고 결정한다",
+    a: "스스로에게 말하거나 누군가와 얘기해보고 결정한다",
+    k: "가슴에서 오는 느낌을 따라 결정한다",
+    d: "장단점을 목록으로 정리하고 논리적으로 따져본 후 결정한다" },
+  { q: "집중이 안 될 때 방해가 되는 것은...",
+    v: "주변의 움직임이나 어지러운 환경",
+    a: "소음이나 주변 대화 소리",
+    k: "의자가 불편하거나 몸이 불편한 느낌",
+    d: "왜 이걸 해야 하는지 납득이 안 될 때" },
+  { q: "무언가 잘 기억하려고 할 때 나는...",
+    v: "눈으로 보면서 이미지로 기억한다",
+    a: "소리 내어 반복하거나 리듬으로 외운다",
+    k: "손으로 쓰거나 몸으로 반복하면서 익힌다",
+    d: "개념의 구조와 연결 관계를 이해한 후 논리적으로 기억한다" },
+  { q: "대화할 때 나는...",
+    v: "상대의 표정과 몸짓을 주로 본다",
+    a: "상대의 말 내용과 톤에 집중한다",
+    k: "상대와의 전체적인 분위기와 느낌에 집중한다",
+    d: "상대가 말하는 내용의 논리와 근거에 집중한다" },
+  { q: "여행지에서 감동받을 때 나는...",
+    v: "아름다운 풍경이나 색깔에 감동받는다",
+    a: "그곳의 소리, 음악, 사람들의 언어에 감동받는다",
+    k: "그 공간의 공기, 온도, 전체적인 느낌에 감동받는다",
+    d: "그 지역의 역사, 문화적 의미를 알게 될 때 감동받는다" },
+  { q: "프레젠테이션을 준비할 때 나는...",
+    v: "슬라이드 디자인과 시각 자료에 공을 들인다",
+    a: "말할 내용과 전달 방식을 주로 연습한다",
+    k: "실제로 서서 말해보며 몸으로 익힌다",
+    d: "논리 흐름과 구성이 맞는지 내용의 완결성에 집중한다" },
+  { q: "스트레스를 풀 때 나는...",
+    v: "좋아하는 영상을 보거나 예쁜 것들을 본다",
+    a: "음악을 듣거나 누군가와 대화한다",
+    k: "운동을 하거나 몸을 움직인다",
+    d: "혼자 생각을 정리하거나 일지를 쓰며 상황을 분석한다" },
+  { q: "무언가 설명할 때 나는...",
+    v: "손으로 그림을 그리거나 도표를 보여준다",
+    a: "논리적으로 말로 풀어서 설명한다",
+    k: "직접 해보여 주거나 체험하게 한다",
+    d: "핵심 개념과 원리부터 순서대로 단계적으로 설명한다" },
+  { q: "쇼핑할 때 나는...",
+    v: "색상과 디자인이 마음에 들어야 산다",
+    a: "브랜드나 주변 평가, 설명이 납득되어야 산다",
+    k: "직접 입어보거나 만져봐야 결정이 된다",
+    d: "성분, 스펙, 가성비를 꼼꼼히 비교 분석한 후 결정한다" },
+  { q: "좋은 강의나 수업이란...",
+    v: "시각 자료가 풍부하고 잘 정리된 강의",
+    a: "강사의 설명이 명확하고 목소리가 좋은 강의",
+    k: "실습이나 활동이 포함되어 직접 해볼 수 있는 강의",
+    d: "내용이 논리적으로 구성되어 있고 왜 그런지 이유를 설명해주는 강의" },
+  { q: "누군가를 처음 만났을 때 나는...",
+    v: "외모나 옷차림이 먼저 눈에 들어온다",
+    a: "목소리 톤이나 말하는 방식이 먼저 느껴진다",
+    k: "그 사람에게서 오는 에너지나 분위기가 먼저 느껴진다",
+    d: "그 사람이 어떤 사람인지, 어떤 생각을 가지고 있는지가 궁금해진다" },
+  { q: "글을 쓸 때 나는...",
+    v: "전체 구조와 레이아웃을 먼저 그려본다",
+    a: "말하듯이 자연스럽게 흘러가며 쓴다",
+    k: "감정과 느낌이 올라올 때 한번에 써내려간다",
+    d: "논리 구조를 먼저 짜고 근거와 내용을 채워넣는다" },
+  { q: "운동이나 기술을 배울 때 나는...",
+    v: "시범을 보면서 따라한다",
+    a: "코치의 설명을 들으며 이해하고 따라한다",
+    k: "일단 몸으로 해보면서 익힌다",
+    d: "왜 그 동작을 해야 하는지 원리를 먼저 이해해야 한다" },
+  { q: "기억에 남는 여행이란...",
+    v: "아름다운 장면들이 사진처럼 남아있는 여행",
+    a: "좋은 사람들과 나눈 대화가 기억에 남는 여행",
+    k: "몸으로 느꼈던 감동과 경험이 남아있는 여행",
+    d: "새로운 지식과 인사이트를 얻고 생각이 확장된 여행" },
+  { q: "코칭이나 상담에서 나는...",
+    v: "내 상황을 그림이나 비유로 설명하면 이해가 잘 된다",
+    a: "충분히 들어주고 대화하는 것만으로도 정리가 된다",
+    k: "뭔가 직접 해보거나 몸으로 경험하면 변화가 느껴진다",
+    d: "왜 그런 생각이나 행동을 하는지 원인과 구조를 이해할 때 변화가 시작된다" },
+];
+
+// Build survey
+const form = document.getElementById('survey-form');
+questions.forEach((q, i) => {
+  const item = document.createElement('div');
+  item.className = 'survey-item';
+  item.innerHTML = `
+    <div class="survey-q">${i+1}. ${q.q}</div>
+    <div class="survey-options">
+      ${['v','a','k','d'].map(type => `
+        <label class="survey-opt" id="opt-${i}-${type}" onclick="selectOpt(${i},'${type}')">
+          <input type="radio" name="q${i}" value="${type}">
+          <div class="opt-circle"></div>
+          <span class="opt-type ${type}-type">${type.toUpperCase()}</span>
+          <span class="opt-text">${q[type]}</span>
+        </label>
+      `).join('')}
+    </div>
+  `;
+  form.appendChild(item);
+});
+
+function selectOpt(qIdx, type) {
+  ['v','a','k','d'].forEach(t => {
+    const el = document.getElementById(`opt-${qIdx}-${t}`);
+    el.classList.remove('selected-v','selected-a','selected-k','selected-d');
+  });
+  document.getElementById(`opt-${qIdx}-${type}`).classList.add(`selected-${type}`);
+}
+
+function calcScore() {
+  let v=0, a=0, k=0, d=0;
+  questions.forEach((q, i) => {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    if (checked) {
+      if (checked.value === 'v') v++;
+      else if (checked.value === 'a') a++;
+      else if (checked.value === 'k') k++;
+      else if (checked.value === 'd') d++;
+    }
+  });
+  const total = v + a + k + d;
+  if (total < 10) { alert('더 많은 문항에 답해주세요 (최소 10개 이상 권장)'); return; }
+
+  const result = document.getElementById('score-result');
+  result.style.display = 'block';
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  setTimeout(() => {
+    document.getElementById('bar-v').style.width = (v/20*100) + '%';
+    document.getElementById('bar-a').style.width = (a/20*100) + '%';
+    document.getElementById('bar-k').style.width = (k/20*100) + '%';
+    document.getElementById('bar-d').style.width = (d/20*100) + '%';
+    document.getElementById('cnt-v').textContent = v + '개';
+    document.getElementById('cnt-a').textContent = a + '개';
+    document.getElementById('cnt-k').textContent = k + '개';
+    document.getElementById('cnt-d').textContent = d + '개';
+  }, 100);
+
+  const max = Math.max(v, a, k, d);
+  const typeNames = { v: 'V (시각형)', a: 'A (청각형)', k: 'K (신체감각형)', d: 'D (내적언어형)' };
+  const scores = { v, a, k, d };
+  const dominant = Object.keys(scores).find(key => scores[key] === max);
+  const dominantName = typeNames[dominant];
+
+  const comments = {
+    v: `<strong>시각형(V)</strong>이 주된 표상체계입니다. 이미지, 그림, 색깔로 세상을 처리합니다.<br><br>
+        <strong>코칭 언어:</strong> "어떻게 보이세요?" · "그 장면을 그려보면?" · "앞이 어떻게 보이나요?"<br>
+        <strong>강점:</strong> 타임라인 워크에서 이미지를 선명하게 그리는 것이 강력합니다. 목표를 시각화할 때 가장 잘 공명합니다.<br>
+        <strong>앵커 재료 (Ch.17):</strong> 색깔·이미지·장면이 가장 강하게 작동합니다. "이 느낌이 색깔이라면?" 질문으로 앵커를 심으세요.<br>
+        <strong>코치 팁:</strong> 시각형 고객에게는 화이트보드, 마인드맵, 도표를 활용한 코칭이 효과적입니다.`,
+    a: `<strong>청각형(A)</strong>이 주된 표상체계입니다. 소리, 리듬, 언어로 세상을 처리합니다.<br><br>
+        <strong>코칭 언어:</strong> "어떻게 들리나요?" · "내면에서 뭐라고 말하고 있나요?" · "그 목소리는 어떤 톤인가요?"<br>
+        <strong>강점:</strong> 말의 톤과 리듬에 민감하게 반응합니다. 충분한 대화와 경청만으로도 정리가 되는 경향이 있습니다.<br>
+        <strong>앵커 재료 (Ch.17):</strong> 소리·음악·목소리 톤이 가장 강하게 작동합니다. "이 상태에 어울리는 음악이 있나요?" 질문으로 앵커를 심으세요.<br>
+        <strong>코치 팁:</strong> 코치의 목소리 톤, 속도, 리듬이 특히 중요합니다. 조용하고 리드미컬한 진행이 라포를 강화합니다.`,
+    k: `<strong>신체감각형(K)</strong>이 주된 표상체계입니다. 느낌과 감각으로 세상을 처리합니다.<br><br>
+        <strong>코칭 언어:</strong> "몸에서 어떤 느낌이 드나요?" · "가슴에서는요?" · "그 느낌이 어디서 오는 것 같나요?"<br>
+        <strong>강점:</strong> 타임라인 워크, 행동 수반 질문 기법이 특히 강력하게 작용합니다. 직접 경험할 때 가장 깊이 변화합니다.<br>
+        <strong>앵커 재료 (Ch.17):</strong> 신체 동작·자세·호흡이 가장 강하게 작동합니다. 손 동작이나 특정 자세를 앵커로 심으세요.<br>
+        <strong>코치 팁:</strong> 말보다 몸의 신호에 집중하세요. 호흡, 자세, 신체 반응을 활용한 개입이 효과적입니다.`,
+    d: `<strong>내적언어형(D)</strong>이 주된 표상체계입니다. 논리, 개념, 의미로 세상을 처리합니다.<br><br>
+        <strong>코칭 언어:</strong> "어떤 의미로 다가오세요?" · "논리적으로 정리하면 어떻게 되나요?" · "왜 그것이 중요한가요?"<br>
+        <strong>강점:</strong> 자기 내면의 언어와 대화에 매우 잘 반응합니다. 구조적이고 체계적인 접근을 선호합니다.<br>
+        <strong>앵커 재료 (Ch.17):</strong> 단어·문장·선언문이 가장 강하게 작동합니다. "이 상태를 단어 하나로 담는다면?" 질문으로 앵커를 심으세요. 본인이 만든 단어가 가장 깊이 각인됩니다.<br>
+        <strong>코치 팁:</strong> D 유형은 감정을 분석하는 경향이 강합니다. "머리로는 정리가 됐는데, 가슴으로 느껴보면 어떤가요?"처럼 D→K로 연결하는 개입이 깊은 알아차림을 만들어냅니다.`
+  };
+
+  // 복합형 체크
+  const sortedScores = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  let additionalComment = '';
+  if (sortedScores[0][1] === sortedScores[1][1]) {
+    additionalComment = `<br><br><em style="color:rgba(255,255,255,0.5);">※ 두 유형이 동점입니다. 복합형 표상체계로, 상황에 따라 두 채널을 유연하게 사용합니다.</em>`;
+  }
+
+  document.getElementById('score-comment').innerHTML =
+    `<strong style="color:var(--accent2);">주된 표상체계: ${dominantName} (${max}개 / 20문항)</strong><br><br>${comments[dominant]}${additionalComment}`;
+}
+</script>
+</body>
+</html>
