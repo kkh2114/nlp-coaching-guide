@@ -2781,15 +2781,23 @@ tr:nth-child(even) td { background: var(--paper2); }
     .bar-zone.soul { background: linear-gradient(135deg, #2d3561, #4a90d9); }
 
     .bar-hourglass { display: flex; justify-content: center; align-items: center; gap: 40px; margin: 32px 0; flex-wrap: wrap; }
-    .bar-diamond { display: flex; flex-direction: column; align-items: center; }
-    .bar-tri-top, .bar-tri-bot { width: 280px; height: 140px; display: flex; flex-direction: column; justify-content: center; }
-    .bar-tri-top { clip-path: polygon(0 0, 100% 0, 50% 100%); background: linear-gradient(180deg, #2d3561 0%, #4a90d9 100%); color: #fff; padding: 16px 0 0; }
-    .bar-tri-bot { clip-path: polygon(50% 0, 100% 100%, 0 100%); background: linear-gradient(180deg, #e8b86d 0%, #c0392b 100%); color: #fff; padding: 0 0 16px; margin-top: -2px; }
-    .bar-center { width: 70px; height: 70px; border-radius: 50%; background: #5a9a6f; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; margin: -30px 0; z-index: 2; border: 3px solid var(--paper); font-size: 22px; }
-    .bar-center small { font-size: 10px; font-weight: 500; margin-top: 2px; }
-    .bar-lv { text-align: center; padding: 4px 10px; border-bottom: 1px solid rgba(255,255,255,0.2); font-size: 13px; font-weight: 600; }
-    .bar-lv:last-child { border-bottom: none; }
-    .bar-lv .n { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.25); font-size: 12px; line-height: 22px; margin-right: 6px; font-weight: 700; }
+    .bar-diamond { display: flex; flex-direction: column; align-items: center; width: 340px; }
+    .bar-strip { color: #fff; text-align: center; padding: 10px 14px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; }
+    .bar-strip .n { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.28); font-size: 12px; font-weight: 700; align-items: center; justify-content: center; flex-shrink: 0; }
+    /* top inverted pyramid: 7 widest → 5 narrowest */
+    .bar-strip.t7 { width: 100%;  background: #1f2a52; }
+    .bar-strip.t6 { width: 82%;   background: #2d3561; }
+    .bar-strip.t5 { width: 64%;   background: #4a90d9; }
+    /* bottom pyramid: 3 narrowest → 1 widest */
+    .bar-strip.b3 { width: 64%;   background: #d07c4a; }
+    .bar-strip.b2 { width: 82%;   background: #b6643a; }
+    .bar-strip.b1 { width: 100%;  background: #8b2d1f; }
+    .bar-center { width: 72px; height: 72px; border-radius: 50%; background: #5a9a6f; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; margin: -14px 0; z-index: 2; border: 4px solid var(--paper); font-size: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .bar-center small { font-size: 9px; font-weight: 500; margin-top: 1px; letter-spacing: 0.5px; }
+    /* legacy alias for maslow-compare mini diamond */
+    .bar-diamond.mini { width: 240px; }
+    .bar-diamond.mini .bar-strip { font-size: 12px; padding: 7px 10px; }
+    .bar-diamond.mini .bar-center { width: 56px; height: 56px; font-size: 18px; }
     .bar-labels { display: flex; flex-direction: column; gap: 4px; }
     .bar-label-item { background: var(--paper2); border-left: 4px solid var(--accent); padding: 8px 14px; font-size: 13px; width: 200px; }
     .bar-label-item strong { color: var(--ink); display: block; font-size: 12px; letter-spacing: 1px; margin-bottom: 2px; }
@@ -2880,17 +2888,13 @@ tr:nth-child(even) td { background: var(--paper2); }
         </div>
 
         <div class="bar-diamond">
-          <div class="bar-tri-top">
-            <div class="bar-lv"><span class="n">7</span>Service</div>
-            <div class="bar-lv"><span class="n">6</span>External Cohesion</div>
-            <div class="bar-lv"><span class="n">5</span>Internal Cohesion</div>
-          </div>
+          <div class="bar-strip t7"><span class="n">7</span>Service</div>
+          <div class="bar-strip t6"><span class="n">6</span>External Cohesion</div>
+          <div class="bar-strip t5"><span class="n">5</span>Internal Cohesion</div>
           <div class="bar-center">4<small>Transform</small></div>
-          <div class="bar-tri-bot">
-            <div class="bar-lv"><span class="n">3</span>Self-esteem</div>
-            <div class="bar-lv"><span class="n">2</span>Relationship</div>
-            <div class="bar-lv"><span class="n">1</span>Survival</div>
-          </div>
+          <div class="bar-strip b3"><span class="n">3</span>Self-esteem</div>
+          <div class="bar-strip b2"><span class="n">2</span>Relationship</div>
+          <div class="bar-strip b1"><span class="n">1</span>Survival</div>
         </div>
       </div>
 
@@ -3011,18 +3015,14 @@ tr:nth-child(even) td { background: var(--paper2); }
         </div>
 
         <div>
-          <div class="bar-diamond">
-            <div class="bar-tri-top" style="width:220px; height:110px;">
-              <div class="bar-lv"><span class="n">7</span>Service</div>
-              <div class="bar-lv"><span class="n">6</span>Ext. Cohesion</div>
-              <div class="bar-lv"><span class="n">5</span>Int. Cohesion</div>
-            </div>
-            <div class="bar-center" style="width:56px; height:56px; font-size:18px;">4</div>
-            <div class="bar-tri-bot" style="width:220px; height:110px;">
-              <div class="bar-lv"><span class="n">3</span>Self-esteem</div>
-              <div class="bar-lv"><span class="n">2</span>Relationship</div>
-              <div class="bar-lv"><span class="n">1</span>Survival</div>
-            </div>
+          <div class="bar-diamond mini">
+            <div class="bar-strip t7"><span class="n">7</span>Service</div>
+            <div class="bar-strip t6"><span class="n">6</span>Ext. Cohesion</div>
+            <div class="bar-strip t5"><span class="n">5</span>Int. Cohesion</div>
+            <div class="bar-center">4</div>
+            <div class="bar-strip b3"><span class="n">3</span>Self-esteem</div>
+            <div class="bar-strip b2"><span class="n">2</span>Relationship</div>
+            <div class="bar-strip b1"><span class="n">1</span>Survival</div>
           </div>
           <div class="bar-pyramid-label">CONSCIOUSNESS (Barrett)</div>
         </div>
